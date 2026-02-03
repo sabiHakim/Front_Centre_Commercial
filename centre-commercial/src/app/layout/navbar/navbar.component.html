@@ -1,10 +1,13 @@
 <nav class="flex items-center justify-between px-6 py-4 border-b bg-white shadow">
-  <ul class="flex items-center gap-4">
-    <li class="flex items-center gap-2 text-xl font-bold text-gray-800">
-      <lucide-icon name="store" size="24" class="text-blue-500"></lucide-icon>
-      Mall Center
-    </li>
-    <li class="ml-6 hover:text-blue-600 cursor-pointer">Connexion</li>
-    <li class="hover:text-blue-600 cursor-pointer">Inscription</li>
+  <!-- LEFT : Mall Center + icône -->
+  <div class="flex items-center gap-2 text-xl font-bold text-gray-800">
+    <span-lucide [img]="StoreIcon" class="text-blue-600" size="32"></span-lucide>
+    Mall
+  </div>
+  <!-- RIGHT : Connexion / Inscription -->
+  <ul class="flex items-center gap-6">
+    <li class="hover:text-blue-600 cursor-pointer">Connexion</li>
+    <li class="cursor-pointer bg-blue-500 py-2 px-2 rounded-lg text-white">Inscription</li>
   </ul>
 </nav>
+
