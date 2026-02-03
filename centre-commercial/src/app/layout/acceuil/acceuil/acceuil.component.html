@@ -1,0 +1,303 @@
+<!-- bg-center -->
+<div
+  class="bg-[url('/assets/images/bg.jpg')] bg-cover bg-center bg-no-repeat px-5 py-10 md:py-16 relative text-white"
+>
+  <!-- Overlay sombre semi-transparent pour lisibilité -->
+  <div class="absolute inset-0 bg-black/50"></div>
+  <!-- Contenu principal (au-dessus de l'overlay)   mx-auto marge horizontale() -->
+  <div class="relative z-10 max-w-2xl mx-auto text-center">
+    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+      Bienvenue au Mall
+    </h2>
+    <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">
+      La plateforme complète pour gérer votre centre commercial, vos boutiques
+      et offrir une expérience d'achat exceptionnelle
+    </p>
+    <div class="flex justify-center gap-6 flex-wrap">
+      <button
+        class="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-gray-100 hover:text-blue-700 transition-colors duration-200"
+      >
+        Commencer maintenant
+      </button>
+      <button
+        class="bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-200"
+      >
+        Se connecter
+      </button>
+    </div>
+  </div>
+</div>
+<!-- Plus d'espace sur mobile + encore plus sur desktop -->
+<div
+  class="flex justify-between items-center flex-wrap py-10 px-6 sm:px-10 md:px-16 lg:px-24 bg-gray-50 rounded-xl shadow-sm"
+>
+  <!-- Stat 1: Boutiques -->
+  <div class="flex flex-col items-center text-center">
+    <lucide-icon
+      [img]="StoreIcon"
+      size="48"
+      class="text-blue-600 mb-3"
+      strokeWidth="1.8"
+    ></lucide-icon>
+    <span class="text-4xl md:text-5xl font-bold text-gray-800">50+</span>
+    <p class="text-lg font-medium text-gray-600 mt-1">Boutiques</p>
+  </div>
+  <!-- Stat 2: Produits -->
+  <div class="flex flex-col items-center text-center">
+    <lucide-icon
+      [img]="ShoppingBagIcon"
+      size="48"
+      class="text-indigo-600 mb-3"
+      strokeWidth="1.8"
+    ></lucide-icon>
+    <span class="text-4xl md:text-5xl font-bold text-gray-800">1000+</span>
+    <p class="text-lg font-medium text-gray-600 mt-1">Produits</p>
+  </div>
+
+  <!-- Stat 3: Clients -->
+  <div class="flex flex-col items-center text-center">
+    <lucide-icon
+      [img]="UsersIcon"
+      size="48"
+      class="text-green-600 mb-3"
+      strokeWidth="1.8"
+    ></lucide-icon>
+    <span class="text-4xl md:text-5xl font-bold text-gray-800">5000+</span>
+    <p class="text-lg font-medium text-gray-600 mt-1">Clients</p>
+  </div>
+</div>
+<!-- fonctionalite principale -->
+<div class="bg-gray-100 py-8">
+  <div class="text-center mx-auto">
+    <h2 class="text-2xl md:text-2xl lg:text-4xl font-bold mb-6">
+      Fonctionnalités Principales
+    </h2>
+    <p class="md:text-xl max-w-3xl mx-auto">
+      Une solution complète pour tous les acteurs du centre commercial
+    </p>
+  </div>
+  <!-- Conteneur parent des 3 cartes -->
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 lg:gap-10 py-8 px-4 md:px-8"
+  >
+    <!-- Carte 1 -->
+    <div
+      class="flex flex-col items-center text-center bg-white px-6 py-8 rounded-2xl hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full <!-- ← important pour étirer -->"
+    >
+      <lucide-icon
+        [img]="StoreIcon"
+        size="56"
+        class="text-blue-600 mb-4"
+        strokeWidth="1.8"
+      ></lucide-icon>
+      <span class="text-xl md:text-2xl font-bold mb-3">Gestion Boutique</span>
+      <p class="text-lg font-medium text-gray-600 mt-auto">
+        <!-- mt-auto pousse le texte vers le bas si besoin -->
+        Interface complète pour gérer votre boutique, produits et commandes
+      </p>
+    </div>
+
+    <!-- Carte 2 -->
+    <div
+      class="flex flex-col items-center text-center bg-white px-6 py-8 rounded-2xl hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full"
+    >
+      <lucide-icon
+        [img]="ShoppingBagIcon"
+        size="56"
+        class="text-indigo-600 mb-4"
+        strokeWidth="1.8"
+      ></lucide-icon>
+      <span class="text-xl md:text-2xl font-bold mb-3">Expérience Client</span>
+      <p class="text-lg font-medium text-gray-600 mt-auto">
+        Navigation intuitive et achat simplifié pour vos clients
+      </p>
+    </div>
+
+    <!-- Carte 3 -->
+    <div
+      class="flex flex-col items-center text-center bg-white px-6 py-8 rounded-2xl hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full"
+    >
+      <lucide-icon
+        [img]="BarChartIcon"
+        size="56"
+        class="text-green-600 mb-4"
+        strokeWidth="1.8"
+      ></lucide-icon>
+      <span class="text-xl md:text-2xl font-bold mb-3">Analytics</span>
+      <p class="text-lg font-medium text-gray-600 mt-auto">
+        Suivez vos performances avec des rapports détaillés
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- profil plateforme -->
+<div class="bg-gray-200 py-8">
+  <div class="text-center mx-auto">
+    <h2 class="text-2xl md:text-2xl lg:text-4xl font-bold mb-6">
+      Trois Profils, Une Plateforme
+    </h2>
+    <p class="md:text-xl max-w-3xl mx-auto">
+      Des interfaces adaptées à chaque utilisateur
+    </p>
+  </div>
+  <!-- Conteneur parent des 3 cartes -->
+  <div
+    class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-6 lg:gap-10 py-8 px-4 md:px-8"
+  >
+    <!-- Carte 1 -->
+    <div
+      class="flex flex-col items-start bg-white px-6 py-8 rounded-2xl hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full <!-- ← important pour étirer -->"
+    >
+      <lucide-icon
+        [img]="UserCogIcon"
+        size="56"
+        class="text-blue-600 mb-4"
+        strokeWidth="1.8"
+      ></lucide-icon>
+      <span class="text-xl md:text-2xl font-bold mb-3">Admin</span>
+      <p class="text-lg font-medium text-gray-600 mt-auto">
+        <!-- mt-auto pousse le texte vers le bas si besoin -->
+        Gérez l'ensemble du centre commercial, approuvez les boutiques et suivez
+        les performances globales
+      </p>
+      <ul class="space-y-3 text-lg font-medium text-gray-700 mt-3">
+        <li class="flex items-center gap-3">
+          <lucide-icon
+            [img]="ZapIcon"
+            size="20"
+            class="text-gray-500"
+            strokeWidth="2.5"
+          ></lucide-icon>
+          Dashboard complet
+        </li>
+        <li class="flex items-center gap-3">
+          <lucide-icon
+            [img]="ZapIcon"
+            size="20"
+            class="text-gray-500"
+            strokeWidth="2.5"
+          ></lucide-icon>
+          Gestion des boutiques
+        </li>
+        <li class="flex items-center gap-3">
+          <lucide-icon
+            [img]="ZapIcon"
+            size="20"
+            class="text-gray-500"
+            strokeWidth="2.5"
+          ></lucide-icon>
+          Rapports détaillés
+        </li>
+      </ul>
+    </div>
+
+    <!-- Carte 2 -->
+    <div
+      class="flex flex-col items-start bg-white px-6 py-8 rounded-2xl hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full"
+    >
+      <lucide-icon
+        [img]="StoreIcon"
+        size="56"
+        class="text-blue-600 mb-4"
+        strokeWidth="1.8"
+      ></lucide-icon>
+      <span class="text-xl md:text-2xl font-bold mb-3">Boutique</span>
+      <p class="text-lg font-medium text-gray-600 mt-auto">
+        Gérez vos produits, suivez vos commandes et développez votre activité
+      </p>
+      <ul class="space-y-3 text-lg font-medium text-gray-700 mt-3">
+        <li class="flex items-center gap-3">
+          <lucide-icon
+            [img]="ZapIcon"
+            size="20"
+            class="text-gray-500"
+            strokeWidth="2.5"
+          ></lucide-icon>
+          Gestion des produits
+        </li>
+        <li class="flex items-center gap-3">
+          <lucide-icon
+            [img]="ZapIcon"
+            size="20"
+            class="text-gray-500"
+            strokeWidth="2.5"
+          ></lucide-icon>
+          Suivi des commandes
+        </li>
+        <li class="flex items-center gap-3">
+          <lucide-icon
+            [img]="ZapIcon"
+            size="20"
+            class="text-gray-500"
+            strokeWidth="2.5"
+          ></lucide-icon>
+          Statistiques de vente
+        </li>
+      </ul>
+    </div>
+
+    <!-- Carte 3 -->
+    <div
+      class="flex flex-col items-start bg-white px-6 py-8 rounded-2xl hover:shadow-2xl hover:scale-105 transition-all duration-300 h-full"
+    >
+      <lucide-icon
+        [img]="ShoppingBagIcon"
+        size="56"
+        class="text-indigo-600 mb-4"
+        strokeWidth="1.8"
+      ></lucide-icon>
+      <span class="text-xl md:text-2xl font-bold mb-3">Acheteur</span>
+      <p class="text-lg font-medium text-gray-600 mt-auto">
+        Découvrez les produits, faites vos achats et suivez vos commandes
+        facilement
+      </p>
+      <ul class="space-y-3 text-lg font-medium text-gray-700 mt-3">
+        <li class="flex items-center gap-3">
+          <lucide-icon
+            [img]="ZapIcon"
+            size="20"
+            class="text-gray-500"
+            strokeWidth="2.5"
+          ></lucide-icon>
+          Navigation intuitive
+        </li>
+        <li class="flex items-center gap-3">
+          <lucide-icon
+            [img]="ZapIcon"
+            size="20"
+            class="text-gray-500"
+            strokeWidth="2.5"
+          ></lucide-icon>
+          Panier d'achat
+        </li>
+        <li class="flex items-center gap-3">
+          <lucide-icon
+            [img]="ZapIcon"
+            size="20"
+            class="text-gray-500"
+            strokeWidth="2.5"
+          ></lucide-icon>
+          Historique des commandes
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- pret a commencer  -->
+<div class=" bg-blue-700  mx-auto text-center py-8">
+  <h2 class="text-3xl md:text-3xl lg:text-4xl font-bold mb-6 text-white">
+    Prêt à commencer ?
+  </h2>
+  <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto text-white">
+    Rejoignez Mall Center et transformez votre expérience de commerce
+  </p>
+  <div class="flex justify-center gap-6 flex-wrap">
+    <button
+      class="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg shadow-md hover:bg-gray-100 hover:text-blue-700 transition-colors duration-200"
+    >
+      Crée un compte
+    </button>
+  </div>
+</div>

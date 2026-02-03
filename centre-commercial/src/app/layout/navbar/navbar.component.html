@@ -1,13 +1,32 @@
-<nav class="flex items-center justify-between px-6 py-4 border-b bg-white shadow">
+<nav
+  class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 border-b bg-white shadow"
+>
   <!-- LEFT : Mall Center + icône -->
   <div class="flex items-center gap-2 text-xl font-bold text-gray-800">
-    <span-lucide [img]="StoreIcon" class="text-blue-600" size="32"></span-lucide>
+    <span-lucide
+      [img]="StoreIcon"
+      class="text-blue-600"
+      size="32"
+    ></span-lucide>
     Mall
   </div>
   <!-- RIGHT : Connexion / Inscription -->
   <ul class="flex items-center gap-6">
-    <li class="hover:text-blue-600 cursor-pointer">Connexion</li>
-    <li class="cursor-pointer bg-blue-500 py-2 px-2 rounded-lg text-white">Inscription</li>
+    <li>
+      <a
+        routerLink="/connexion"
+        class="hover:text-blue-600 cursor-pointer font-semibold"
+      >
+        Connexion
+      </a>
+    </li>
+    <li>
+      <a
+        routerLink="/inscription"
+        class="cursor-pointer bg-blue-500 py-2 px-4 rounded-lg text-white font-semibold"
+      >
+        Inscription
+      </a>
+    </li>
   </ul>
 </nav>
-
