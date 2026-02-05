@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {LucideAngularModule,ShoppingCart  } from 'lucide-angular';
+import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
 @Component({
   selector: 'app-card-produit',
   standalone: true,
-  imports: [CommonModule,LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './card-produit.component.html',
   styleUrl: './card-produit.component.css',
 })
@@ -16,6 +16,6 @@ export class CardProduitComponent {
   @Input() description!: string;
   @Input() prix!: number;
   @Input() stock!: number;
-    protected readonly StoreIcon = ShoppingCart ;
-
+  @Input() boutiqueNom!: string;
+  protected readonly StoreIcon = ShoppingCart;
 }

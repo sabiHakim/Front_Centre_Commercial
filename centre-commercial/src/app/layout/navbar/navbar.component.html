@@ -1,86 +1,122 @@
-<nav class="sticky top-0 z-50 flex items-center justify-between px-6 py-4 border-b bg-white shadow">
+<nav class="sticky top-0 z-50 bg-white shadow border-b">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
-  <!-- Logo (toujours visible) -->
-  <div class="flex items-center gap-2 text-xl font-bold text-gray-800">
-    <lucide-angular
-      [img]="StoreIcon"
-      class="text-blue-600"
-      size="32">
-    </lucide-angular>
-    Mall
-  </div>
+    <!-- Logo -->
+    <div class="flex items-center gap-2 text-xl font-bold text-gray-800">
+      <lucide-angular [img]="StoreIcon" class="text-blue-600" size="32"></lucide-angular>
+      Mall
+    </div>
 
-  <!-- Zone de droite : liens + profil / déconnexion -->
-  <div class="flex items-center gap-6">
-    <!-- ──────────────────────────────────────────────── -->
-    <!-- Utilisateur NON connecté                           -->
-    <!-- ──────────────────────────────────────────────── -->
-    <ng-container *ngIf="!auth.isLoggedIn">
+    <!-- Menu burger pour mobile -->
+    <div class="sm:hidden">
+      <button (click)="mobileMenuOpen = !mobileMenuOpen" class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <lucide-angular [img]="MenuIcon" size="24"></lucide-angular>
+      </button>
+    </div>
 
-      <a routerLink="/connexion"
-         class="hover:text-blue-600 font-semibold cursor-pointer">
-        Connexion
-      </a>
-
-      <a routerLink="/inscription"
-         class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg cursor-pointer transition-colors">
-        Inscription
-      </a>
-
-    </ng-container>
-
-
-    <!-- ──────────────────────────────────────────────── -->
-    <!-- Utilisateur CONNECTÉ → affichage selon rôle       -->
-    <!-- ──────────────────────────────────────────────── -->
-    <ng-container *ngIf="auth.isLoggedIn">
-
-      <!-- Acheteur -->
-      <ng-container *ngIf="auth.hasRole('acheteur')">
-        <a routerLink="/client"                    class="hover:text-blue-600">Locaux</a>
-        <a routerLink="/client/reservations"       class="hover:text-blue-600">Réservations</a>
-        <a routerLink="/client/factures"           class="hover:text-blue-600">Factures</a>
-        <a routerLink="/client/profil"             class="hover:text-blue-600">Profil</a>
+    <!-- Liens (desktop) -->
+    <div class="hidden sm:flex items-center gap-6">
+      <ng-container *ngIf="!auth.isLoggedIn">
+        <a routerLink="/connexion" class="hover:text-blue-600 font-semibold cursor-pointer">Connexion</a>
+        <a routerLink="/inscription"
+           class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg cursor-pointer transition-colors">
+           Inscription
+        </a>
       </ng-container>
 
-      <!-- Boutique -->
+      <ng-container *ngIf="auth.isLoggedIn">
+        <!-- Acheteur -->
+        <ng-container *ngIf="auth.hasRole('acheteur')">
+          <a routerLink="/client" class="hover:text-blue-600">Locaux</a>
+          <a routerLink="/client/reservations" class="hover:text-blue-600">Réservations</a>
+          <a routerLink="/client/factures" class="hover:text-blue-600">Factures</a>
+          <a routerLink="/client/profil" class="hover:text-blue-600">Profil</a>
+        </ng-container>
+
+        <!-- Boutique -->
+        <ng-container *ngIf="auth.hasRole('boutique')">
+          <a routerLink="/boutique/dashboard" class="hover:text-indigo-600 flex items-center gap-1.5">
+            <lucide-angular [img]="LayoutDashboardIcon" size="18"></lucide-angular>
+            Tableau de bord
+          </a>
+          <a routerLink="/boutique/contrats" class="hover:text-indigo-600">Contrats</a>
+          <a routerLink="/boutique/locaux" class="hover:text-indigo-600">Mes locaux</a>
+          <a routerLink="/boutique/prospects" class="hover:text-indigo-600">Prospects</a>
+        </ng-container>
+
+        <!-- Admin -->
+        <ng-container *ngIf="auth.hasRole('admin')">
+          <a routerLink="/admin/dashboard" class="hover:text-purple-600 flex items-center gap-1.5">
+            <lucide-angular [img]="LayoutDashboardIcon" size="18"></lucide-angular>
+            Administration
+          </a>
+          <a routerLink="/admin/boutiques" class="hover:text-purple-600">Boutiques</a>
+          <a routerLink="/admin/locaux" class="hover:text-purple-600">Locaux</a>
+          <a routerLink="/admin/utilisateurs" class="hover:text-purple-600">Utilisateurs</a>
+          <a routerLink="/admin/statistiques" class="hover:text-purple-600">Statistiques</a>
+        </ng-container>
+
+        <!-- Utilisateur + déconnexion -->
+        <div class="flex items-center gap-4 ml-6 pl-6 border-l border-gray-200">
+          <span class="text-sm font-medium text-gray-700">
+            {{ (auth.currentUser?.email ?? '').split('@')[0] || 'Utilisateur' }}
+          </span>
+          <button (click)="auth.logout()" class="flex items-center gap-1.5 text-red-600 hover:text-red-800 font-medium transition-colors">
+            <lucide-angular [img]="LogOutIcon" size="18"></lucide-angular>
+            Déconnexion
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Menu mobile -->
+  <div *ngIf="mobileMenuOpen" class="sm:hidden px-6 pb-4">
+    <ng-container *ngIf="!auth.isLoggedIn">
+      <a routerLink="/connexion" class="block py-2 hover:text-blue-600">Connexion</a>
+      <a routerLink="/inscription" class="block py-2 bg-blue-500 text-white rounded-lg text-center hover:bg-blue-600">Inscription</a>
+    </ng-container>
+
+    <ng-container *ngIf="auth.isLoggedIn">
+      <!-- Affiche les liens selon le rôle, format vertical -->
+      <ng-container *ngIf="auth.hasRole('acheteur')">
+        <a routerLink="/client" class="block py-2 hover:text-blue-600">Locaux</a>
+        <a routerLink="/client/reservations" class="block py-2 hover:text-blue-600">Réservations</a>
+        <a routerLink="/client/factures" class="block py-2 hover:text-blue-600">Factures</a>
+        <a routerLink="/client/profil" class="block py-2 hover:text-blue-600">Profil</a>
+      </ng-container>
+
       <ng-container *ngIf="auth.hasRole('boutique')">
-        <a routerLink="/boutique/dashboard" class="hover:text-indigo-600 flex items-center gap-1.5">
+        <a routerLink="/boutique/dashboard" class="block py-2 hover:text-indigo-600 flex items-center gap-1.5">
           <lucide-angular [img]="LayoutDashboardIcon" size="18"></lucide-angular>
           Tableau de bord
         </a>
-        <a routerLink="/boutique/contrats"         class="hover:text-indigo-600">Contrats</a>
-        <a routerLink="/boutique/locaux"           class="hover:text-indigo-600">Mes locaux</a>
-        <a routerLink="/boutique/prospects"        class="hover:text-indigo-600">Prospects</a>
+        <a routerLink="/boutique/contrats" class="block py-2 hover:text-indigo-600">Contrats</a>
+        <a routerLink="/boutique/locaux" class="block py-2 hover:text-indigo-600">Mes locaux</a>
+        <a routerLink="/boutique/prospects" class="block py-2 hover:text-indigo-600">Prospects</a>
       </ng-container>
 
-      <!-- Admin -->
       <ng-container *ngIf="auth.hasRole('admin')">
-        <a routerLink="/admin/dashboard" class="hover:text-purple-600 flex items-center gap-1.5">
+        <a routerLink="/admin/dashboard" class="block py-2 hover:text-purple-600 flex items-center gap-1.5">
           <lucide-angular [img]="LayoutDashboardIcon" size="18"></lucide-angular>
           Administration
         </a>
-        <a routerLink="/admin/boutiques"           class="hover:text-purple-600">Boutiques</a>
-        <a routerLink="/admin/locaux"              class="hover:text-purple-600">Locaux</a>
-        <a routerLink="/admin/utilisateurs"        class="hover:text-purple-600">Utilisateurs</a>
-        <a routerLink="/admin/statistiques"        class="hover:text-purple-600">Statistiques</a>
+        <a routerLink="/admin/boutiques" class="block py-2 hover:text-purple-600">Boutiques</a>
+        <a routerLink="/admin/locaux" class="block py-2 hover:text-purple-600">Locaux</a>
+        <a routerLink="/admin/utilisateurs" class="block py-2 hover:text-purple-600">Utilisateurs</a>
+        <a routerLink="/admin/statistiques" class="block py-2 hover:text-purple-600">Statistiques</a>
       </ng-container>
-      <!-- Partie commune : nom utilisateur + déconnexion -->
-      <div class="flex items-center gap-4 ml-6 pl-6 border-l border-gray-200">
-        <!-- Solution sans erreur undefined -->
-        <span class="text-sm font-medium text-gray-700">
+
+      <!-- Utilisateur + déconnexion -->
+      <div class="mt-2 border-t border-gray-200 pt-2">
+        <span class="block text-sm font-medium text-gray-700 mb-1">
           {{ (auth.currentUser?.email ?? '').split('@')[0] || 'Utilisateur' }}
         </span>
-
-        <button (click)="auth.logout()"
-                class="flex items-center gap-1.5 text-red-600 hover:text-red-800 font-medium transition-colors">
+        <button (click)="auth.logout()" class="flex items-center gap-1.5 text-red-600 hover:text-red-800 font-medium transition-colors">
           <lucide-angular [img]="LogOutIcon" size="18"></lucide-angular>
           Déconnexion
         </button>
       </div>
-
     </ng-container>
-
   </div>
-
 </nav>

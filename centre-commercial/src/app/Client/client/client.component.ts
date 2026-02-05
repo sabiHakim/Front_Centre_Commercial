@@ -1,25 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ClientService } from '../../service/Client/client.service';
 import { CardProduitComponent } from '../../layout/card-produit/card-produit.component';
 @Component({
   selector: 'app-client',
   standalone: true,
-  imports: [CommonModule,CardProduitComponent],
+  imports: [CommonModule, CardProduitComponent, FormsModule],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css',
 })
 export class ClientComponent implements OnInit {
   produits: any[] = [];
   boutiques: any[] = [];
+  searchTerm: string = '';
   constructor(private clientService: ClientService) {}
   ngOnInit(): void {
     this.boutiques = this.clientService.getBoutiques();
     this.produits = this.clientService.getProduits();
   }
   getNomBoutique(boutiqueId: number): string {
-  const boutique = this.boutiques.find(b => b.id === boutiqueId);
-  return boutique ? boutique.nom : '';
-}
-
+    const boutique = this.boutiques.find((b) => b.id === boutiqueId);
+    return boutique ? boutique.nom : '';
+  }
+  get filteredProduits() {
+    return this.produits.filter((p) =>
+      p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()),
+    );
+  }
 }
