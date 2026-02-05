@@ -5,7 +5,6 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Router } from '@angular/router';
 import { LucideAngularModule, Store, User, UserCog } from 'lucide-angular';
 import { AuthService } from '../../auth.service';
 @Component({
@@ -18,7 +17,6 @@ export class LoginComponent {
   protected readonly StoreIcon = Store;
   protected readonly UserCogIcon = UserCog;
   private fb = inject(FormBuilder);
-  private router = inject(Router);
   private auth = inject(AuthService);
 
   loginForm: FormGroup;

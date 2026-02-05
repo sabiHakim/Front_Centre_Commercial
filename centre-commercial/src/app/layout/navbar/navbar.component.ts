@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Store } from 'lucide-angular';
-import { LucideAngularModule, LogOut, LayoutDashboard } from 'lucide-angular';
+import { LucideAngularModule, LogOut, LayoutDashboard ,Store} from 'lucide-angular';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { CommonModule } from '@angular/common';

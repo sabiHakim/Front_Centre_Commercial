@@ -1,5 +1,4 @@
 // src/app/core/auth.service.ts   (ou src/app/auth.service.ts)
-
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
@@ -22,28 +21,18 @@ export class AuthService {
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
 
-  constructor() {
-    // IMPORTANT : plus de localStorage ici !
-    // On déplace la logique dans une méthode initAuth()
-  }
+  constructor() {}
 
-  /**
-   * À appeler une seule fois au démarrage de l'application
-   * (idéalement dans AppComponent.ngOnInit() ou via APP_INITIALIZER)
-   */
   initAuth(): void {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-
     const savedRole = localStorage.getItem('userRole') as UserRole | null;
     const savedEmail = localStorage.getItem('userEmail');
-
     if (savedEmail && savedRole !== null) {
       this.userSubject.next({ email: savedEmail, role: savedRole });
     }
   }
-
   /**
    * Connexion avec vérification email + mot de passe (simulation démo)
    */
@@ -51,7 +40,6 @@ export class AuthService {
     if (!isPlatformBrowser(this.platformId)) {
       return;
     }
-
     // Liste des utilisateurs de démonstration
     const demoUsers: Record<string, { password: string; role: Exclude<UserRole, null> }> = {
       'acheteur@demo.com': {
@@ -107,7 +95,6 @@ export class AuthService {
       localStorage.removeItem('userEmail');
       localStorage.removeItem('isLoggedIn');
     }
-
     this.router.navigate(['/']);
   }
 
@@ -137,7 +124,6 @@ export class AuthService {
       boutique: '/boutique/dashboard',
       acheteur: '/client',
     };
-
     const path = routes[role] || '/';
     this.router.navigate([path]);
   }

@@ -1,2 +1,10 @@
 
-<p>client works!</p>
+<!-- Container grid pour toutes les cartes produits -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-8">
+  <app-card-produit 
+    *ngFor="let produit of produits" 
+    [produit]="produit">
+  </app-card-produit>
+</div>
+
+
