@@ -3,14 +3,21 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ClientService } from '../../service/Client/client.service';
 import { CardProduitComponent } from '../../layout/card-produit/card-produit.component';
+import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
 @Component({
   selector: 'app-client',
   standalone: true,
-  imports: [CommonModule, CardProduitComponent, FormsModule],
+  imports: [
+    CommonModule,
+    CardProduitComponent,
+    FormsModule,
+    LucideAngularModule,
+  ],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css',
 })
 export class ClientComponent implements OnInit {
+  protected readonly StoreIcon = ShoppingCart;
   produits: any[] = [];
   boutiques: any[] = [];
   searchTerm: string = '';
