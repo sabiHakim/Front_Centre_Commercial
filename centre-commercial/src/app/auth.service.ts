@@ -3,6 +3,7 @@ import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { PanierService } from './service/panier/panier.service';
 
 export type UserRole = 'acheteur' | 'boutique' | 'admin' | null;
 
@@ -21,7 +22,7 @@ export class AuthService {
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
 
-  constructor() {}
+  constructor(public panierService:PanierService) {}
 
   initAuth(): void {
     if (!isPlatformBrowser(this.platformId)) {
@@ -87,21 +88,40 @@ export class AuthService {
   /**
    * Déconnexion complète
    */
-  logout(): void {
-    this.userSubject.next(null);
+logout(): void {
+  // Réinitialise l'état utilisateur
+  this.userSubject.next(null);
 
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('userRole');
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('isLoggedIn');
-    }
-    this.router.navigate(['/']);
+  if (isPlatformBrowser(this.platformId)) {
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('panier');
   }
 
+  // 🔹 Réinitialiser le panier dans le service
+  this.panierService.clearPanier();  // <-- ajoute ça
+
+  // Redirection vers la page d'accueil
+  this.router.navigate(['/']);
+}
+//   logout(): void {
+//   this.userSubject.next(null);
+
+//   if (isPlatformBrowser(this.platformId)) {
+//     localStorage.removeItem('userRole');
+//     localStorage.removeItem('userEmail');
+//     localStorage.removeItem('isLoggedIn');
+//     localStorage.removeItem('panier');
+//   }
+
+//   this.router.navigateByUrl('/').then(() => {
+//     window.location.reload();
+//   });
+// }
   // ────────────────────────────────────────────────
   // Getters utiles
   // ────────────────────────────────────────────────
-
   get currentUser(): AppUser | null {
     return this.userSubject.value;
   }
@@ -120,8 +140,8 @@ export class AuthService {
 
   private redirectAfterLogin(role: Exclude<UserRole, null>): void {
     const routes: Record<Exclude<UserRole, null>, string> = {
-      admin:    '/admin/dashboard',
-      boutique: '/boutique/dashboard',
+      admin:    '/admin',
+      boutique: '/boutique',
       acheteur: '/client',
     };
     const path = routes[role] || '/';

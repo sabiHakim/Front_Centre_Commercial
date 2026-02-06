@@ -23,7 +23,9 @@
 </div>
 
 <!-- Filtre Catégorie + Total + Panier -->
-<div class="flex flex-col sm:flex-row items-center justify-between mb-4 px-8 mt-4">
+<div
+  class="flex flex-col sm:flex-row items-center justify-between mb-4 px-8 mt-4"
+>
   <!-- Gauche : catégorie + total -->
   <div class="flex items-center gap-4">
     <!-- Sélecteur catégorie -->
@@ -42,16 +44,23 @@
     </p>
   </div>
   <!-- Droite : bouton Panier -->
-  <div>
+  <div class="flex justify-center">
     <button
-      class="bg-blue-800 text-white px-6 py-2 rounded-lg hover:bg-blue-900 transition-colors font-semibold"
+      routerLink="/panier"
+      class="relative w-50 bg-blue-800 text-white px-6 py-2 rounded-lg hover:bg-blue-900 transition-colors font-semibold flex items-center justify-center gap-2"
     >
-     <lucide-angular [img]="StoreIcon" size="18"></lucide-angular>
+      <lucide-angular [img]="StoreIcon" size="18"></lucide-angular>
       Panier
+      <!-- Badge -->
+      <span
+        *ngIf="panierService.getTotalCount() > 0"
+        class="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
+      >
+        {{ panierService.getTotalCount() }}
+      </span>
     </button>
   </div>
 </div>
-
 
 <!-- Container grid pour toutes les cartes produits -->
 <div

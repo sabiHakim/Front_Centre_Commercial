@@ -1,0 +1,80 @@
+<div class="max-w-7xl mx-auto p-6">
+  <!-- TITRE -->
+  <h1 class="text-xl font-semibold mb-6 flex items-center gap-2">
+    <lucide-angular [img]="BoxIcon" size="28"></lucide-angular>
+    Dashboard Boutique
+  </h1>
+  <!-- 1️⃣ STATISTIQUES RAPIDES -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+    <!-- Total Produits -->
+    <div class="bg-white shadow-md rounded-xl p-6 flex flex-col items-center">
+      <lucide-angular
+        [img]="PackageIcon"
+        size="32"
+        class="mb-2 text-blue-600"
+      ></lucide-angular>
+      <p class="text-2xl font-bold">12</p>
+      <p class="text-gray-500">Produits</p>
+    </div>
+    <!-- Commandes récentes -->
+    <div class="bg-white shadow-md rounded-xl p-6 flex flex-col items-center">
+      <lucide-angular
+        [img]="ShoppingCartIcon"
+        size="32"
+        class="mb-2 text-green-600"
+      ></lucide-angular>
+      <p class="text-2xl font-bold">8</p>
+      <p class="text-gray-500">Commandes</p>
+    </div>
+    <!-- Chiffre d'affaires -->
+    <div class="bg-white shadow-md rounded-xl p-6 flex flex-col items-center">
+      <lucide-angular
+        [img]="CreditCardIcon"
+        size="32"
+        class="mb-2 text-yellow-600"
+      ></lucide-angular>
+      <p class="text-2xl font-bold">5 400 000 Ar</p>
+      <p class="text-gray-500">Chiffre d'affaires</p>
+    </div>
+  </div>
+  <!-- 2️⃣ COMMANDES RÉCENTES -->
+  <h2 class="text-2xl font-semibold mb-4">Commandes récentes</h2>
+
+  <div class="bg-white shadow rounded-xl p-4 mb-8">
+    <div
+      *ngFor="let commande of commandes"
+      class="flex justify-between items-center border-b last:border-none py-3 px-2 hover:bg-gray-50 transition-colors rounded-md"
+    >
+      <!-- Infos de gauche -->
+      <div class="flex flex-col gap-1">
+        <p class="font-semibold flex items-center gap-2">
+          <lucide-angular
+            [img]="ShoppingCartIcon"
+            size="18"
+            class="text-blue-600"
+          ></lucide-angular>
+          Commande #{{ commande.id }}
+        </p>
+        <p class="text-sm text-gray-500">Client: {{ commande.client }}</p>
+        <p class="text-sm text-gray-500">Date: {{ commande.date }}</p>
+      </div>
+
+      <!-- Infos de droite -->
+      <div class="flex flex-col items-end gap-1">
+        <p class="font-bold text-blue-700">{{ commande.total | number }} Ar</p>
+
+        <!-- Badge statut -->
+        <span
+          [ngClass]="{
+            'bg-yellow-100 text-yellow-800': commande.statut === 'En cours',
+            'bg-green-100 text-green-800': commande.statut === 'Livrée',
+            'bg-red-100 text-red-800': commande.statut === 'Annulée',
+          }"
+          class="px-3 py-1 rounded-full text-sm font-semibold"
+        >
+          {{ commande.statut }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

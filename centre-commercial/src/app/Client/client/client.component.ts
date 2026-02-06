@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ClientService } from '../../service/Client/client.service';
 import { CardProduitComponent } from '../../layout/card-produit/card-produit.component';
 import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
+import { PanierService } from '../../service/panier/panier.service';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-client',
   standalone: true,
@@ -12,6 +14,7 @@ import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
     CardProduitComponent,
     FormsModule,
     LucideAngularModule,
+    RouterModule
   ],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css',
@@ -21,7 +24,7 @@ export class ClientComponent implements OnInit {
   produits: any[] = [];
   boutiques: any[] = [];
   searchTerm: string = '';
-  constructor(private clientService: ClientService) {}
+  constructor(private clientService: ClientService,public panierService: PanierService) {}
   ngOnInit(): void {
     this.boutiques = this.clientService.getBoutiques();
     this.produits = this.clientService.getProduits();

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
+import { PanierService } from '../../service/panier/panier.service';
 @Component({
   selector: 'app-card-produit',
   standalone: true,
@@ -18,4 +19,10 @@ export class CardProduitComponent {
   @Input() stock!: number;
   @Input() boutiqueNom!: string;
   protected readonly StoreIcon = ShoppingCart;
+  // panier
+  constructor(private panierService: PanierService) {}
+  ajouterAuPanier() {
+    this.panierService.addProduit(this.produit);
+  }
+
 }
