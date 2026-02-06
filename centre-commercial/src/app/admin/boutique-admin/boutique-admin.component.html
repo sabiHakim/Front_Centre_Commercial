@@ -1,0 +1,126 @@
+<div class="flex items-center justify-between mb-4 mt-4 px-10">
+  <h2 class="text-xl flex items-center gap-3 text-gray-800">
+    Gestion des Boutiques
+  </h2>
+
+  <button
+    (click)="ouvrirModalAjout()"
+    class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+  >
+    <lucide-angular [img]="PlusCircleIcon" size="18"></lucide-angular>
+    Ajouter une boutique
+  </button>
+</div>
+
+<div class="overflow-x-auto bg-white shadow-md rounded-2xl">
+  <table class="min-w-full text-sm">
+    <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+      <tr>
+        <th class="px-6 py-4 text-left">Boutique</th>
+        <th class="px-6 py-4 text-left">Propriétaire</th>
+        <th class="px-6 py-4 text-center">Produits</th>
+        <th class="px-6 py-4 text-center">Statut</th>
+        <th class="px-6 py-4 text-right">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y">
+      <tr *ngFor="let b of boutiques" class="hover:bg-gray-50 transition">
+        <td class="px-6 py-4 flex items-center gap-4">
+          <img [src]="b.logo" class="w-11 h-11 rounded-xl object-cover border" />
+          <div>
+            <p class="font-semibold text-gray-800">{{ b.nom }}</p>
+            <p class="text-xs text-gray-500">{{ b.email }}</p>
+          </div>
+        </td>
+        <td class="px-6 py-4 text-gray-700">{{ b.proprietaire }}</td>
+        <td class="px-6 py-4 text-center font-medium">{{ b.produits }}</td>
+        <td class="px-6 py-4 text-center">
+          <span
+            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
+            [ngClass]="b.actif ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+          >
+            <lucide-angular [img]="b.actif ? CheckCircleIcon : XCircleIcon" size="14"></lucide-angular>
+            {{ b.actif ? 'Active' : 'Suspendue' }}
+          </span>
+        </td>
+        <td class="px-6 py-4 text-right">
+          <div class="flex justify-end gap-2">
+            <button
+              (click)="toggle(b.id)"
+              class="p-2 rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-200 transition"
+              title="Changer statut"
+            >
+              <lucide-angular [img]="b.actif ? PauseCircleIcon : PlayCircleIcon" size="16"></lucide-angular>
+            </button>
+            <button
+              (click)="ouvrirModalEdition(b)"
+              class="p-2 rounded-lg bg-yellow-100 text-yellow-600 hover:bg-yellow-200 transition"
+              title="Modifier"
+            >
+              <lucide-angular [img]="EditIcon" size="16"></lucide-angular>
+            </button>
+            <button
+              (click)="delete(b.id)"
+              class="p-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition"
+              title="Supprimer"
+            >
+              <lucide-angular [img]="TrashIcon" size="16"></lucide-angular>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal Ajout / Edition -->
+<div
+  *ngIf="modalOuvert"
+  class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+>
+  <div class="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-xl animate-slide-in">
+    <div class="flex items-center justify-between mb-4 border-b pb-2">
+      <h3 class="text-xl font-semibold text-gray-800">
+        {{ mode === 'ajout' ? 'Ajouter une boutique' : 'Modifier la boutique' }}
+      </h3>
+      <button (click)="fermerModal()" class="text-gray-400 hover:text-gray-700 text-2xl font-bold" title="Fermer">&times;</button>
+    </div>
+
+    <form (ngSubmit)="confirmer()" class="flex flex-col gap-4">
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Nom</label>
+        <input type="text" [(ngModel)]="boutiqueForm.nom" name="nom" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Propriétaire</label>
+        <input type="text" [(ngModel)]="boutiqueForm.proprietaire" name="proprietaire" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Email</label>
+        <input type="email" [(ngModel)]="boutiqueForm.email" name="email" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Nombre de produits</label>
+        <input type="number" [(ngModel)]="boutiqueForm.produits" name="produits" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">URL du logo</label>
+        <input type="text" [(ngModel)]="boutiqueForm.logo" name="logo" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" />
+      </div>
+
+      <div class="flex justify-end gap-3 mt-4">
+        <button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition" (click)="fermerModal()">Annuler</button>
+        <button type="submit" class="px-4 py-2 rounded-lg text-white transition flex items-center gap-2
+          bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="!boutiqueForm.nom || !boutiqueForm.proprietaire || !boutiqueForm.email || !boutiqueForm.produits">
+          <lucide-angular [img]="mode === 'ajout' ? PlusCircleIcon : EditIcon" size="16"></lucide-angular>
+          {{ mode === 'ajout' ? 'Ajouter' : 'Modifier' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

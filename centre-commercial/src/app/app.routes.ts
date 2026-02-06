@@ -7,6 +7,8 @@ import { PanierComponent } from './panier/panier/panier.component';
 import { AcceuilComponentAdmin } from './admin/acceuil/acceuil.component';
 import { AcceuilBoutiqueComponent } from './Boutique/acceuil-boutique/acceuil-boutique.component';
 import { ProduitBoutiqueComponent } from './Boutique/produit-boutique/produit-boutique.component';
+import { BoutiqueAdminComponent } from './admin/boutique-admin/boutique-admin.component';
+
 export const routes: Routes = [
   { path: 'inscription', component: InscriptionComponent },
   { path: 'connexion', component: LoginComponent },
@@ -14,7 +16,10 @@ export const routes: Routes = [
   { path: 'client', component: ClientComponent },
   { path: 'panier', component: PanierComponent },
   // admin
-  { path: 'admin', component: AcceuilComponentAdmin },
+  { path: 'admin/dashboard', component: AcceuilComponentAdmin },
+  { path: 'admin/boutiques', component: BoutiqueAdminComponent },
+
+  
   // boutique
   { path: 'boutique', component: AcceuilBoutiqueComponent },
   { path: 'boutique/produits', component: ProduitBoutiqueComponent },

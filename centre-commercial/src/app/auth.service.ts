@@ -140,7 +140,7 @@ logout(): void {
 
   private redirectAfterLogin(role: Exclude<UserRole, null>): void {
     const routes: Record<Exclude<UserRole, null>, string> = {
-      admin:    '/admin',
+      admin:    '/admin/dashboard',
       boutique: '/boutique',
       acheteur: '/client',
     };
