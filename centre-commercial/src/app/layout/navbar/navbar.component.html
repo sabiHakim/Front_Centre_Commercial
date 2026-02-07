@@ -1,0 +1,152 @@
+<nav class="sticky top-0 z-50 bg-white shadow border-b">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- 🔹 Logo -->
+    <div class="flex items-center gap-2 text-xl font-bold text-gray-800">
+      <lucide-angular
+        [img]="StoreIcon"
+        class="text-blue-600"
+        size="32"
+      ></lucide-angular>
+      <a
+        [routerLink]="
+          auth.hasRole('admin')
+            ? '/admin'
+            : auth.hasRole('boutique')
+              ? '/boutique'
+              : auth.hasRole('acheteur')
+                ? '/client'
+                : '/'
+        "
+        class="hover:text-blue-600"
+      >
+        Mall
+      </a>
+    </div>
+
+    <!-- 🔹 Menu burger (mobile) -->
+    <button
+      class="sm:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      (click)="mobileMenuOpen = !mobileMenuOpen"
+    >
+      <lucide-angular [img]="MenuIcon" size="24"></lucide-angular>
+    </button>
+
+    <!-- 🔹 Liens desktop -->
+    <div class="hidden sm:flex items-center gap-6">
+      <!-- Non connecté -->
+      <ng-container *ngIf="!auth.isLoggedIn">
+        <a routerLink="/connexion" class="hover:text-blue-600 font-semibold">
+          Connexion
+        </a>
+        <a
+          routerLink="/inscription"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg transition"
+        >
+          Inscription
+        </a>
+      </ng-container>
+
+      <!-- Acheteur -->
+      <ng-container *ngIf="auth.hasRole('acheteur')">
+        <a routerLink="/client" class="hover:text-blue-600">Locaux</a>
+        <a routerLink="/client/reservations" class="hover:text-blue-600"
+          >Réservations</a
+        >
+        <a routerLink="/client/factures" class="hover:text-blue-600"
+          >Factures</a
+        >
+        <a routerLink="/client/profil" class="hover:text-blue-600">Profil</a>
+      </ng-container>
+
+      <!-- Boutique -->
+      <ng-container *ngIf="auth.hasRole('boutique')">
+        <a
+          routerLink="/boutique"
+          class="flex items-center gap-1.5 hover:text-indigo-600"
+        >
+          <lucide-angular
+            [img]="LayoutDashboardIcon"
+            size="18"
+          ></lucide-angular>
+          Dashboard
+        </a>
+        <a routerLink="/boutique/produits" class="hover:text-indigo-600">
+          Produits
+        </a>
+      </ng-container>
+
+      <!-- Admin -->
+      <ng-container *ngIf="auth.hasRole('admin')">
+        <a
+          routerLink="/admin/dashboard"
+          class="flex items-center gap-1.5 hover:text-purple-600"
+        >
+          <lucide-angular
+            [img]="LayoutDashboardIcon"
+            size="18"
+          ></lucide-angular>
+          Administration
+        </a>
+        <a routerLink="/admin/boutiques" class="hover:text-purple-600"
+          >Boutiques</a
+        >
+      </ng-container>
+
+      <!-- 🔹 User / logout -->
+      <ng-container *ngIf="auth.isLoggedIn">
+        <div class="flex items-center gap-4 ml-6 pl-6 border-l">
+          <span class="text-sm font-medium text-gray-700">
+            {{ (auth.currentUser?.email ?? "").split("@")[0] }}
+          </span>
+          <button
+            (click)="auth.logout()"
+            class="flex items-center gap-1.5 text-red-600 hover:text-red-800"
+          >
+            <lucide-angular [img]="LogOutIcon" size="18"></lucide-angular>
+            Déconnexion
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- 🔹 Menu mobile -->
+  <div *ngIf="mobileMenuOpen" class="sm:hidden px-6 pb-4 space-y-2">
+    <ng-container *ngIf="!auth.isLoggedIn">
+      <a routerLink="/connexion" class="block py-2">Connexion</a>
+      <a
+        routerLink="/inscription"
+        class="block py-2 bg-blue-500 text-white rounded text-center"
+      >
+        Inscription
+      </a>
+    </ng-container>
+
+    <ng-container *ngIf="auth.hasRole('acheteur')">
+      <a routerLink="/client" class="block py-2">Locaux</a>
+      <a routerLink="/client/reservations" class="block py-2">Réservations</a>
+      <a routerLink="/client/factures" class="block py-2">Factures</a>
+      <a routerLink="/client/profil" class="block py-2">Profil</a>
+    </ng-container>
+
+    <ng-container *ngIf="auth.hasRole('boutique')">
+      <a routerLink="/boutique" class="block py-2">Dashboard</a>
+      <a routerLink="/boutique/produits" class="block py-2">Produits</a>
+    </ng-container>
+
+    <ng-container *ngIf="auth.hasRole('admin')">
+      <a routerLink="/admin/dashboard" class="block py-2">Administration</a>
+      <a routerLink="/admin/boutiques" class="block py-2">Boutiques</a>
+    </ng-container>
+
+    <ng-container *ngIf="auth.isLoggedIn">
+      <button
+        (click)="auth.logout()"
+        class="flex items-center gap-2 text-red-600 mt-2"
+      >
+        <lucide-angular [img]="LogOutIcon" size="18"></lucide-angular>
+        Déconnexion
+      </button>
+    </ng-container>
+  </div>
+</nav>

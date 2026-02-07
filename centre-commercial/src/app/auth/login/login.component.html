@@ -1,0 +1,73 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
+    <h1 class="text-3xl font-bold text-center mb-6">Connexion</h1>
+
+    <!-- Boutons démo rapides -->
+    <div class="flex justify-center gap-4 mb-8">
+      <button
+        (click)="fillDemo('acheteur')"
+        class="flex flex-col items-center gap-2 flex-1 py-4 px-3 border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-purple-50 transition-colors"
+      >
+        <lucide-icon
+          [img]="UserIcon"
+          size="32"
+          class="text-blue-600"
+        ></lucide-icon>
+        <span class="text-sm font-medium">Acheteur</span>
+      </button>
+      <button
+        (click)="fillDemo('boutique')"
+        class="flex flex-col items-center gap-2 flex-1 py-4 px-3 border-2 border-gray-200 rounded-xl hover:border-indigo-500 hover:bg-purple-50 transition-colors"
+      >
+        <lucide-icon
+          [img]="StoreIcon"
+          size="32"
+          class="text-indigo-600"
+        ></lucide-icon>
+        <span class="text-sm font-medium">Boutique</span>
+      </button>
+      <button
+        (click)="fillDemo('admin')"
+        class="flex flex-col items-center gap-2 flex-1 py-4 px-3 border-2 border-gray-200 rounded-xl hover:border-indigo-500 hover:bg-purple-50 transition-colors"
+      >
+        <lucide-icon
+          [img]="UserCogIcon"
+          size="32"
+          class="text-purple-600"
+        ></lucide-icon>
+        <span class="text-sm font-medium">Admin</span>
+      </button>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="space-y-6">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Email</label>
+        <input
+          formControlName="email"
+          type="email"
+          class="mt-1 block w-full rounded-lg border-gray-300 py-3 px-4"
+          placeholder="votre@email.com"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700"
+          >Mot de passe</label
+        >
+        <input
+          formControlName="password"
+          type="password"
+          class="mt-1 block w-full rounded-lg border-gray-300 py-3 px-4"
+          placeholder="••••••••"
+        />
+      </div>
+      <button
+        type="submit"
+        [disabled]="loginForm.invalid"
+        class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50"
+      >
+        Se connecter
+      </button>
+    </form>
+  </div>
+</div>

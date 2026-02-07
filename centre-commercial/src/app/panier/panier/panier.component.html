@@ -1,0 +1,65 @@
+<div class="max-w-5xl mx-auto p-6">
+  <!-- Titre -->
+  <h2 class="text-xl semi-bold mb-6 flex items-center gap-2">
+    <lucide-angular [img]="PackageIcon" size="28"></lucide-angular>
+    Mon Panier
+  </h2>
+
+  <!-- Panier vide -->
+  <div
+    *ngIf="panierService.getPanier().length === 0"
+    class="text-center text-gray-500 py-20"
+  >
+    <lucide-angular
+      [img]="PackageIcon"
+      size="48"
+      class="mx-auto mb-4"
+    ></lucide-angular>
+    Panier vide
+  </div>
+
+  <!-- Liste produits -->
+  <div
+    *ngFor="let p of panierService.getPanier()"
+    class="flex flex-col sm:flex-row items-center justify-between bg-white shadow-md rounded-xl p-4 mb-4 gap-4"
+  >
+    <!-- Image + infos -->
+    <div class="flex items-center gap-4 w-full sm:w-auto">
+      <img
+        [src]="p.image"
+        alt="{{ p.nom }}"
+        class="w-20 h-20 object-cover rounded-lg border"
+      />
+
+      <div>
+        <p class="font-semibold text-lg">{{ p.nom }}</p>
+        <p class="text-sm text-gray-500">{{ p.prix }} Ar × {{ p.quantite }}</p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-6">
+      <p class="font-bold text-blue-700 text-lg">
+        {{ p.prix * p.quantite }} Ar
+      </p>
+
+      <button
+        (click)="supprimer(p.id)"
+        class="flex items-center gap-1 text-red-600 hover:text-red-800 transition"
+      >
+        <lucide-angular [img]="TrashIcon" size="18"></lucide-angular>
+        Supprimer
+      </button>
+    </div>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="flex justify-end items-center mt-8 text-xl font-bold gap-2">
+    <button
+      class="flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white text-lg font-semibold px-6 py-3 rounded-xl shadow-lg transition-all active:scale-95"
+    >
+      <lucide-angular [img]="CreditCardIcon" size="22"></lucide-angular>
+      Acheter — {{ panierService.getTotalPrix() }} Ar
+    </button>
+  </div>
+</div>

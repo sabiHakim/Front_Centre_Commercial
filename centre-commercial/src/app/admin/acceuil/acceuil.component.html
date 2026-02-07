@@ -1,0 +1,45 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+  <!-- Total boutiques -->
+  <div class="bg-white rounded-2xl shadow p-5 flex items-center gap-4">
+    <div class="p-3 bg-blue-100 rounded-full">
+      <lucide-angular [img]="StoreIcon" size="24" class="text-blue-600"></lucide-angular>
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm uppercase">Total boutiques</p>
+      <p class="text-2xl font-bold text-gray-800">{{ stats.total }}</p>
+    </div>
+  </div>
+
+  <!-- Boutiques actives -->
+  <div class="bg-green-50 rounded-2xl shadow p-5 flex items-center gap-4">
+    <div class="p-3 bg-green-100 rounded-full">
+      <lucide-angular [img]="CheckCircleIcon" size="24" class="text-green-700"></lucide-angular>
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm uppercase">Boutiques actives</p>
+      <p class="text-2xl font-bold text-green-700">{{ stats.actives }}</p>
+    </div>
+  </div>
+
+  <!-- Boutiques désactivées -->
+  <div class="bg-red-50 rounded-2xl shadow p-5 flex items-center gap-4">
+    <div class="p-3 bg-red-100 rounded-full">
+      <lucide-angular [img]="XCircleIcon" size="24" class="text-red-700"></lucide-angular>
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm uppercase">Boutiques désactivées</p>
+      <p class="text-2xl font-bold text-red-700">{{ stats.desactivees }}</p>
+    </div>
+  </div>
+
+  <!-- Nouvelles boutiques -->
+  <div class="bg-blue-50 rounded-2xl shadow p-5 flex items-center gap-4">
+    <div class="p-3 bg-blue-100 rounded-full">
+      <lucide-angular [img]="PlusCircleIcon" size="24" class="text-blue-700"></lucide-angular>
+    </div>
+    <div>
+      <p class="text-gray-500 text-sm uppercase">Nouvelles boutiques</p>
+      <p class="text-2xl font-bold text-blue-700">{{ stats.nouvelles }}</p>
+    </div>
+  </div>
+</div>
