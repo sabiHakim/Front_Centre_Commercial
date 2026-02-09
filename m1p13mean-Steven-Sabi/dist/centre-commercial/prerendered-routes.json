@@ -1,0 +1,13 @@
+{
+  "routes": [
+    "/",
+    "/admin/boutiques",
+    "/admin/dashboard",
+    "/boutique",
+    "/boutique/produits",
+    "/client",
+    "/connexion",
+    "/inscription",
+    "/panier"
+  ]
+}
