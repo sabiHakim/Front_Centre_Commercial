@@ -1,4 +1,4 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mb-6 mt-6">
   <!-- Total boutiques -->
   <div class="bg-white rounded-2xl shadow p-5 flex items-center gap-4">
     <div class="p-3 bg-blue-100 rounded-full">
@@ -16,30 +16,123 @@
       <lucide-angular [img]="CheckCircleIcon" size="24" class="text-green-700"></lucide-angular>
     </div>
     <div>
-      <p class="text-gray-500 text-sm uppercase">Boutiques actives</p>
+      <p class="text-gray-500 text-sm uppercase">Payés</p>
       <p class="text-2xl font-bold text-green-700">{{ stats.actives }}</p>
     </div>
   </div>
-
   <!-- Boutiques désactivées -->
   <div class="bg-red-50 rounded-2xl shadow p-5 flex items-center gap-4">
     <div class="p-3 bg-red-100 rounded-full">
       <lucide-angular [img]="XCircleIcon" size="24" class="text-red-700"></lucide-angular>
     </div>
     <div>
-      <p class="text-gray-500 text-sm uppercase">Boutiques désactivées</p>
+      <p class="text-gray-500 text-sm uppercase">Non payés</p>
       <p class="text-2xl font-bold text-red-700">{{ stats.desactivees }}</p>
     </div>
   </div>
-
   <!-- Nouvelles boutiques -->
   <div class="bg-blue-50 rounded-2xl shadow p-5 flex items-center gap-4">
     <div class="p-3 bg-blue-100 rounded-full">
-      <lucide-angular [img]="PlusCircleIcon" size="24" class="text-blue-700"></lucide-angular>
+      <lucide-angular [img]="PlusCircleIcon" size="24" class="text-yellow-700"></lucide-angular>
     </div>
     <div>
-      <p class="text-gray-500 text-sm uppercase">Nouvelles boutiques</p>
-      <p class="text-2xl font-bold text-blue-700">{{ stats.nouvelles }}</p>
+      <p class="text-gray-500 text-sm uppercase">Revenus</p>
+      <p class="text-2xl font-bold text-yellow-700">{{ stats.nouvelles }}</p>
     </div>
   </div>
 </div>
+
+<div class="flex flex-wrap gap-4 items-center mb-6">
+  <select
+    [(ngModel)]="moisSelectionne"
+    (change)="refreshStats()"
+    class="border rounded-lg px-3 py-2"
+  >
+    <option [value]="1">Janvier</option>
+    <option [value]="2">Février</option>
+    <option [value]="3">Mars</option>
+    <option [value]="4">Avril</option>
+    <option [value]="5">Mai</option>
+    <option [value]="6">Juin</option>
+    <option [value]="7">Juillet</option>
+    <option [value]="8">Août</option>
+    <option [value]="9">Septembre</option>
+    <option [value]="10">Octobre</option>
+    <option [value]="11">Novembre</option>
+    <option [value]="12">Décembre</option>
+  </select>
+
+  <select
+    [(ngModel)]="anneeSelectionnee"
+    (change)="refreshStats()"
+    class="border rounded-lg px-3 py-2"
+  >
+    <option [value]="2025">2025</option>
+    <option [value]="2026">2026</option>
+    <option [value]="2027">2027</option>
+  </select>
+</div>
+
+<div class="bg-white rounded-2xl shadow overflow-hidden">
+  <div class="p-5 border-b font-semibold text-gray-700">
+    Paiement des loyers — {{ moisSelectionne }}/{{ anneeSelectionnee }}
+  </div>
+
+  <table class="min-w-full text-sm">
+    <thead class="bg-gray-50 text-gray-600 uppercase">
+      <tr>
+        <th class="px-4 py-3 text-left">Boutique</th>
+        <th class="px-4 py-3">Propriétaire</th>
+        <th class="px-4 py-3">Loyer</th>
+        <th class="px-4 py-3">Statut</th>
+        <th class="px-4 py-3">Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let b of boutiques"
+        class="border-t hover:bg-gray-50"
+      >
+        <td class="px-4 py-3 font-medium">{{ b.nom }}</td>
+        <td class="px-4 py-3 text-center">{{ b.proprietaire }}</td>
+        <td class="px-4 py-3 text-center">
+          {{ b.loyer | number }} Ar
+        </td>
+
+        <!-- Statut -->
+        <td class="px-4 py-3 text-center">
+          <span
+            class="px-3 py-1 rounded-full text-xs font-semibold"
+            [ngClass]="
+              estPaye(b.id)
+                ? 'bg-green-100 text-green-700'
+                : 'bg-red-100 text-red-700'
+            "
+          >
+            {{ estPaye(b.id) ? 'Payé' : 'Non payé' }}
+          </span>
+        </td>
+
+        <!-- Action -->
+        <td class="px-4 py-3 text-center">
+          <button
+            *ngIf="!estPaye(b.id)"
+            (click)="payer(b.id)"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            Payer
+          </button>
+
+          <span
+            *ngIf="estPaye(b.id)"
+            class="text-green-600 font-semibold"
+          >
+            ✔ OK
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
