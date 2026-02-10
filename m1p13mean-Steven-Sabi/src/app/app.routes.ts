@@ -12,13 +12,15 @@ import { LoyerBoutiqueComponent } from './Boutique/loyer-boutique/loyer-boutique
 import { LocalComponent } from './admin/local/local.component';
 import { AbonnementComponent } from './admin/abonnement/abonnement.component';
 import { CommandeBoutiqueComponent } from './Boutique/commande-boutique/commande-boutique.component';
-
+import { CommandeClientComponent } from './Client/commande-client/commande-client.component';
 export const routes: Routes = [
   { path: 'inscription', component: InscriptionComponent },
   { path: 'connexion', component: LoginComponent },
   // client
   { path: 'client', component: ClientComponent },
   { path: 'panier', component: PanierComponent },
+  { path: 'client/commandes', component: CommandeClientComponent },
+
   // admin
   { path: 'admin/dashboard', component: AcceuilComponentAdmin },
   { path: 'admin/boutiques', component: BoutiqueAdminComponent },

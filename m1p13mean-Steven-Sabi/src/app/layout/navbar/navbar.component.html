@@ -48,14 +48,7 @@
 
       <!-- Acheteur -->
       <ng-container *ngIf="auth.hasRole('acheteur')">
-        <a routerLink="/client" class="hover:text-blue-600">Locaux</a>
-        <a routerLink="/client/reservations" class="hover:text-blue-600"
-          >Réservations</a
-        >
-        <a routerLink="/client/factures" class="hover:text-blue-600"
-          >Factures</a
-        >
-        <a routerLink="/client/profil" class="hover:text-blue-600">Profil</a>
+        <a routerLink="/client/commandes" class="hover:text-blue-600">Mes Commandes</a>
       </ng-container>
 
       <!-- Boutique -->

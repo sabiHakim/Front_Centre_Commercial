@@ -1,0 +1,60 @@
+<div class="max-w-4xl mx-auto mt-6">
+
+  <h2 class="text-xl font-bold mb-4">Mes commandes</h2>
+
+  <div class="bg-white p-5 rounded-xl shadow">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-50 uppercase text-gray-600">
+        <tr>
+          <th class="px-4 py-2 text-left">Produit</th>
+          <th class="px-4 py-2 text-center">Quantité</th>
+          <th class="px-4 py-2 text-center">Montant</th>
+          <th class="px-4 py-2 text-center">Date</th>
+          <th class="px-4 py-2 text-center">Statut</th>
+          <th class="px-4 py-2 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of commandes" class="border-t hover:bg-gray-50">
+          <td class="px-4 py-2">{{ c.produit }}</td>
+          <td class="px-4 py-2 text-center">{{ c.quantite }}</td>
+          <td class="px-4 py-2 text-center">{{ c.montant | number }} Ar</td>
+          <td class="px-4 py-2 text-center">{{ c.date }}</td>
+          <td class="px-4 py-2 text-center">
+            <span
+              [ngClass]="
+                c.statut === 'validée'
+                  ? 'bg-green-100 text-green-700 px-2 py-1 rounded'
+                  : c.statut === 'refusée'
+                  ? 'bg-red-100 text-red-700 px-2 py-1 rounded'
+                  : 'bg-yellow-100 text-yellow-700 px-2 py-1 rounded'
+              "
+            >
+              {{ c.statut }}
+            </span>
+          </td>
+          <td class="px-4 py-2 text-center flex justify-center gap-2 items-center">
+            <button
+              *ngIf="c.statut === 'en attente'"
+              (click)="valider(c.id)"
+              class="bg-green-600 p-2 rounded hover:bg-green-700"
+              title="Valider"
+            >
+              <lucide-angular [img]="CheckCircleIcon" size="18" class="text-white"></lucide-angular>
+            </button>
+            <button
+              *ngIf="c.statut === 'en attente'"
+              (click)="refuser(c.id)"
+              class="bg-red-600 p-2 rounded hover:bg-red-700"
+              title="Refuser"
+            >
+              <lucide-angular [img]="XCircleIcon" size="18" class="text-white"></lucide-angular>
+            </button>
+            <span *ngIf="c.statut !== 'en attente'" class="font-semibold text-gray-600">✔</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
