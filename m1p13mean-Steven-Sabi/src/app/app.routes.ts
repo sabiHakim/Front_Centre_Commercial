@@ -11,6 +11,7 @@ import { BoutiqueAdminComponent } from './admin/boutique-admin/boutique-admin.co
 import { LoyerBoutiqueComponent } from './Boutique/loyer-boutique/loyer-boutique.component';
 import { LocalComponent } from './admin/local/local.component';
 import { AbonnementComponent } from './admin/abonnement/abonnement.component';
+import { CommandeBoutiqueComponent } from './Boutique/commande-boutique/commande-boutique.component';
 
 export const routes: Routes = [
   { path: 'inscription', component: InscriptionComponent },
@@ -23,14 +24,12 @@ export const routes: Routes = [
   { path: 'admin/boutiques', component: BoutiqueAdminComponent },
   { path: 'admin/local', component: LocalComponent },
   { path: 'admin/abonnement', component: AbonnementComponent },
-
-
-
-
   // boutique
   { path: 'boutique', component: AcceuilBoutiqueComponent },
   { path: 'boutique/produits', component: ProduitBoutiqueComponent },
   { path: 'boutique/loyers', component: LoyerBoutiqueComponent },
+  { path: 'boutique/commande', component: CommandeBoutiqueComponent },
+
   
   { path: '', component: AcceuilComponent },
 ];
