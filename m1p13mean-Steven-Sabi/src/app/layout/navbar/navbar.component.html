@@ -10,7 +10,7 @@
       <a
         [routerLink]="
           auth.hasRole('admin')
-            ? '/admin'
+            ? '/admin/dashboard'
             : auth.hasRole('boutique')
               ? '/boutique'
               : auth.hasRole('acheteur')
@@ -92,6 +92,12 @@
         </a>
         <a routerLink="/admin/boutiques" class="hover:text-purple-600"
           >Boutiques</a
+        >
+         <a routerLink="/admin/abonnement" class="hover:text-purple-600"
+          >Abonnement</a
+        >
+         <a routerLink="/admin/local" class="hover:text-purple-600"
+          >Local</a
         >
       </ng-container>
 

@@ -19,7 +19,6 @@
         <th class="px-6 py-4 text-left">Boutique</th>
         <th class="px-6 py-4 text-left">Propriétaire</th>
         <th class="px-6 py-4 text-center">Produits</th>
-        <th class="px-6 py-4 text-center">Statut</th>
         <th class="px-6 py-4 text-right">Actions</th>
       </tr>
     </thead>
@@ -34,24 +33,8 @@
         </td>
         <td class="px-6 py-4 text-gray-700">{{ b.proprietaire }}</td>
         <td class="px-6 py-4 text-center font-medium">{{ b.produits }}</td>
-        <td class="px-6 py-4 text-center">
-          <span
-            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
-            [ngClass]="b.actif ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
-          >
-            <lucide-angular [img]="b.actif ? CheckCircleIcon : XCircleIcon" size="14"></lucide-angular>
-            {{ b.actif ? 'Active' : 'Suspendue' }}
-          </span>
-        </td>
         <td class="px-6 py-4 text-right">
           <div class="flex justify-end gap-2">
-            <button
-              (click)="toggle(b.id)"
-              class="p-2 rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-200 transition"
-              title="Changer statut"
-            >
-              <lucide-angular [img]="b.actif ? PauseCircleIcon : PlayCircleIcon" size="16"></lucide-angular>
-            </button>
             <button
               (click)="ouvrirModalEdition(b)"
               class="p-2 rounded-lg bg-yellow-100 text-yellow-600 hover:bg-yellow-200 transition"
