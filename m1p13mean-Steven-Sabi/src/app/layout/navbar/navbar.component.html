@@ -10,7 +10,7 @@
       <a
         [routerLink]="
           auth.hasRole('admin')
-            ? '/admin'
+            ? '/admin/dashboard'
             : auth.hasRole('boutique')
               ? '/boutique'
               : auth.hasRole('acheteur')
@@ -48,14 +48,7 @@
 
       <!-- Acheteur -->
       <ng-container *ngIf="auth.hasRole('acheteur')">
-        <a routerLink="/client" class="hover:text-blue-600">Locaux</a>
-        <a routerLink="/client/reservations" class="hover:text-blue-600"
-          >Réservations</a
-        >
-        <a routerLink="/client/factures" class="hover:text-blue-600"
-          >Factures</a
-        >
-        <a routerLink="/client/profil" class="hover:text-blue-600">Profil</a>
+        <a routerLink="/client/commandes" class="hover:text-blue-600">Mes Commandes</a>
       </ng-container>
 
       <!-- Boutique -->
@@ -73,6 +66,12 @@
         <a routerLink="/boutique/produits" class="hover:text-indigo-600">
           Produits
         </a>
+         <a routerLink="/boutique/loyers" class="hover:text-indigo-600">
+          Loyers
+        </a>
+         <a routerLink="/boutique/commande" class="hover:text-indigo-600">
+          Commandes
+        </a>
       </ng-container>
 
       <!-- Admin -->
@@ -89,6 +88,12 @@
         </a>
         <a routerLink="/admin/boutiques" class="hover:text-purple-600"
           >Boutiques</a
+        >
+         <a routerLink="/admin/abonnement" class="hover:text-purple-600"
+          >Abonnement</a
+        >
+         <a routerLink="/admin/local" class="hover:text-purple-600"
+          >Local</a
         >
       </ng-container>
 

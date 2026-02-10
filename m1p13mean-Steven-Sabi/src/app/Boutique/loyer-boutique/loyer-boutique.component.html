@@ -1,0 +1,66 @@
+<div class="max-w-5xl mx-auto mt-8">
+  <div class="flex items-center gap-3 mb-6">
+    <lucide-angular
+      [img]="PlusCircleIcon"
+      size="24"
+      class="text-yellow-700"
+    ></lucide-angular>
+
+    <h2 class="text-2xl font-bold text-gray-800">
+      Paiement du loyer – {{ boutique.nom }}
+    </h2>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow overflow-hidden">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-50 uppercase text-gray-600">
+        <tr>
+          <th class="px-4 py-3 text-left">Mois</th>
+          <th class="px-4 py-3">Montant</th>
+          <th class="px-4 py-3">Statut</th>
+          <th class="px-4 py-3">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="let m of mois; let i = index"
+          class="border-t hover:bg-gray-50"
+        >
+          <td class="px-4 py-3 font-medium">{{ m }}</td>
+
+          <td class="px-4 py-3 text-center">
+            {{ boutique.loyer | number }} Ar
+          </td>
+
+          <td class="px-4 py-3 text-center">
+            <span
+              class="px-3 py-1 rounded-full text-xs font-semibold"
+              [ngClass]="
+                estPaye(i + 1)
+                  ? 'bg-green-100 text-green-700'
+                  : 'bg-red-100 text-red-700'
+              "
+            >
+              {{ estPaye(i + 1) ? "Payé" : "Non payé" }}
+            </span>
+          </td>
+
+          <td class="px-4 py-3 text-center">
+            <button
+              *ngIf="!estPaye(i + 1)"
+              (click)="payer(i + 1)"
+              class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+            >
+              Payer
+            </button>
+
+            <span *ngIf="estPaye(i + 1)" class="text-green-600 font-semibold">
+              ✔ OK
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
