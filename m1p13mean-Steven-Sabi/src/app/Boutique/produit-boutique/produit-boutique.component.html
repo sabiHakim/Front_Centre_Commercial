@@ -1,8 +1,8 @@
-<!-- Header avec bouton Ajouter -->
-<div class="flex items-center justify-center gap-3 mb-4">
-  <h2 class="text-xl font-semibold">Mes produits</h2>
+<!-- Header -->
+<div class="flex items-center justify-center gap-3 mb-6">
+  <h2 class="text-2xl font-semibold">Mes produits</h2>
   <button
-    class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
+    class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow"
     (click)="ouvrirModal()"
   >
     <lucide-angular [img]="PackageIcon" size="16"></lucide-angular>
@@ -12,32 +12,65 @@
 
 <!-- Grille produits -->
 <div
-  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
 >
   <div
     *ngFor="let produit of produits"
-    class="bg-white shadow-md rounded-xl p-4 flex flex-col hover:shadow-lg"
+    class="bg-white shadow-md rounded-xl p-4 flex flex-col hover:shadow-xl transition"
   >
-    <img
-      [src]="produit.image"
-      alt="{{ produit.nom }}"
-      class="w-full h-40 object-cover rounded-lg mb-3"
-    />
-    <h3 class="font-semibold">{{ produit.nom }}</h3>
-    <p class="text-sm text-gray-500 line-clamp-2">{{ produit.description }}</p>
+    <!-- SLIDER IMAGE -->
+  <div 
+  class="relative mb-3"
+>
+
+  <img
+    *ngIf="hasImages(produit)"
+    [src]="getCurrentImage(produit)"
+    alt="{{ produit.nom }}"
+    class="w-full h-44 object-cover rounded-lg transition-opacity duration-500"
+  />
+
+  <button
+    *ngIf="hasMultipleImages(produit)"
+    (click)="prevImage(produit)"
+    class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white px-2 py-1 rounded"
+  >
+    ‹
+  </button>
+
+  <button
+    *ngIf="hasMultipleImages(produit)"
+    (click)="nextImage(produit)"
+    class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white px-2 py-1 rounded"
+  >
+    ›
+  </button>
+
+</div>
+
+
+    <!-- Infos produit -->
+    <h3 class="font-semibold text-lg">{{ produit.nom }}</h3>
+    <p class="text-sm text-gray-500 line-clamp-2">
+      {{ produit.description }}
+    </p>
+
     <p class="font-bold text-blue-700 mt-2">{{ produit.prix | number }} Ar</p>
+
     <p class="text-sm text-gray-600">Stock: {{ produit.stock }}</p>
 
-    <div class="mt-3 flex justify-between gap-2">
+    <!-- Boutons -->
+    <div class="mt-4 flex justify-between gap-2">
       <button
-        class="flex items-center gap-1 px-3 py-1 rounded bg-blue-500 hover:bg-blue-600 text-white"
+        class="flex items-center gap-1 px-3 py-1 rounded bg-blue-500 hover:bg-blue-600 text-white text-sm"
         (click)="modifierProduit(produit)"
       >
         <lucide-angular [img]="EditIcon" size="16"></lucide-angular>
         Modifier
       </button>
+
       <button
-        class="flex items-center gap-1 px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white"
+        class="flex items-center gap-1 px-3 py-1 rounded bg-red-600 hover:bg-red-700 text-white text-sm"
         (click)="supprimerProduit(produit.id)"
       >
         <lucide-angular [img]="TrashIcon" size="16"></lucide-angular>
@@ -47,21 +80,18 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- MODAL -->
 <div
   *ngIf="modalOuvert"
   class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
 >
-  <!-- Card modal -->
-  <div
-    class="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 relative animate-fade-in"
-  >
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 relative">
     <!-- Header -->
     <div class="flex items-center justify-between mb-6">
       <h3 class="text-lg font-semibold text-gray-800">Ajouter un produit</h3>
       <button
         (click)="fermerModal()"
-        class="text-gray-400 hover:text-gray-700 text-2xl leading-none"
+        class="text-gray-400 hover:text-gray-700 text-2xl"
       >
         &times;
       </button>
@@ -71,82 +101,76 @@
     <form (ngSubmit)="confirmerAjout()" class="space-y-4">
       <!-- Nom -->
       <div>
-        <label class="block text-sm font-medium text-gray-600 mb-1">
-          Nom du produit
-        </label>
+        <label class="block text-sm font-medium mb-1"> Nom du produit </label>
         <input
           type="text"
           [(ngModel)]="nouveauProduit.nom"
           name="nom"
           required
-          class="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          class="w-full rounded-lg border px-3 py-2 focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <!-- Description -->
       <div>
-        <label class="block text-sm font-medium text-gray-600 mb-1">
-          Description
-        </label>
+        <label class="block text-sm font-medium mb-1"> Description </label>
         <textarea
           rows="3"
           [(ngModel)]="nouveauProduit.description"
           name="description"
-          class="w-full rounded-lg border px-3 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-green-500"
+          class="w-full rounded-lg border px-3 py-2 resize-none focus:ring-2 focus:ring-blue-500"
         ></textarea>
       </div>
 
       <!-- Prix & Stock -->
       <div class="grid grid-cols-2 gap-3">
         <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1">
-            Prix (Ar)
-          </label>
+          <label class="block text-sm font-medium mb-1"> Prix (Ar) </label>
           <input
             type="number"
             [(ngModel)]="nouveauProduit.prix"
             name="prix"
             required
-            class="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+            class="w-full rounded-lg border px-3 py-2 focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1">
-            Stock
-          </label>
+          <label class="block text-sm font-medium mb-1"> Stock </label>
           <input
             type="number"
             [(ngModel)]="nouveauProduit.stock"
             name="stock"
             required
-            class="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+            class="w-full rounded-lg border px-3 py-2 focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </div>
 
-      <!-- Image -->
+      <!-- Images multiples -->
       <div>
-        <label class="block text-sm font-medium text-gray-600 mb-1">
-          URL de l’image
+        <label class="block text-sm font-medium mb-1">
+          URLs des images (séparées par virgule)
         </label>
         <input
-          type="file"
-          [(ngModel)]="nouveauProduit.image"
-          name="image"
-          class="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+          type="text"
+          [(ngModel)]="imagesInput"
+          name="imagesInput"
+          placeholder="https://image1.jpg, https://image2.jpg"
+          class="w-full rounded-lg border px-3 py-2 focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
-      <!-- Footer buttons -->
+      <!-- Footer -->
       <div class="flex justify-end gap-3 pt-4">
         <button
           type="button"
           (click)="fermerModal()"
-          class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200"
+          class="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200"
         >
           Annuler
         </button>
+
         <button
           type="submit"
           class="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"

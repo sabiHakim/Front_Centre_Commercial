@@ -5,7 +5,7 @@ export interface Produit {
   description: string;
   prix: number;
   stock: number;
-  image: string;
+  images: string[];
 }
 export interface Commande {
   id: number;
@@ -27,7 +27,11 @@ export class ServiceBoutiqueService {
       description: 'Description produit A',
       prix: 120000,
       stock: 10,
-      image: 'https://picsum.photos/id/1011/400/300',
+      images: [
+        'https://picsum.photos/id/1011/400/300',
+        'https://picsum.photos/id/1015/400/300',
+        'https://picsum.photos/id/1016/400/300',
+      ],
     },
     {
       id: 2,
@@ -35,7 +39,11 @@ export class ServiceBoutiqueService {
       description: 'Description produit B',
       prix: 90000,
       stock: 5,
-      image: 'https://picsum.photos/id/1012/400/300',
+      images: [
+        'https://picsum.photos/id/1011/400/300',
+        'https://picsum.photos/id/1015/400/300',
+        'https://picsum.photos/id/1016/400/300',
+      ],
     },
     {
       id: 3,
@@ -43,7 +51,11 @@ export class ServiceBoutiqueService {
       description: 'Description produit C',
       prix: 45000,
       stock: 0,
-      image: 'https://picsum.photos/id/1013/400/300',
+      images: [
+        'https://picsum.photos/id/1011/400/300',
+        'https://picsum.photos/id/1015/400/300',
+        'https://picsum.photos/id/1016/400/300',
+      ],
     },
   ];
   // =========================
