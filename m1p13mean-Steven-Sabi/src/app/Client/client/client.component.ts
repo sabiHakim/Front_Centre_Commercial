@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
     CardProduitComponent,
     FormsModule,
     LucideAngularModule,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './client.component.html',
   styleUrl: './client.component.css',
@@ -24,18 +24,15 @@ export class ClientComponent implements OnInit {
   produits: any[] = [];
   boutiques: any[] = [];
   searchTerm: string = '';
-  constructor(private clientService: ClientService,public panierService: PanierService) {}
+  constructor(
+    private clientService: ClientService,
+    public panierService: PanierService,
+  ) {}
   ngOnInit(): void {
-    this.boutiques = this.clientService.getBoutiques();
-    this.produits = this.clientService.getProduits();
+    this.clientService.getProduits().subscribe({
+      next: (data) => (this.produits = data),
+      error: (err) => console.error(err),
+    });
   }
-  getNomBoutique(boutiqueId: number): string {
-    const boutique = this.boutiques.find((b) => b.id === boutiqueId);
-    return boutique ? boutique.nom : '';
-  }
-  get filteredProduits() {
-    return this.produits.filter((p) =>
-      p.nom.toLowerCase().includes(this.searchTerm.toLowerCase()),
-    );
-  }
+ 
 }

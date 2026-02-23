@@ -56,7 +56,7 @@
         *ngIf="panierService.getTotalCount() > 0"
         class="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
       >
-        {{ panierService.getTotalCount() }}
+        0
       </span>
     </button>
   </div>
@@ -67,9 +67,8 @@
   class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 p-8 items-stretch"
 >
   <app-card-produit
-    *ngFor="let produit of filteredProduits"
+    *ngFor="let produit of produits"
     [produit]="produit"
-    [boutiqueNom]="getNomBoutique(produit.boutiqueId)"
   >
   </app-card-produit>
 </div>
