@@ -12,11 +12,12 @@ import { Produit } from '../../service/Client/client.service';
 })
 export class CardProduitComponent {
   @Input() produit!: Produit;
+  @Input() boutiqueNom: string = '';
+  @Input() soldeActif: number | null = null;
   protected readonly StoreIcon = ShoppingCart;
   // panier
   constructor(private panierService: PanierService) {}
   ajouterAuPanier() {
     this.panierService.addProduit(this.produit);
   }
-
 }

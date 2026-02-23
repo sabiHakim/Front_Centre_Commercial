@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environnements/environment';
-  
+
 /* ===== INTERFACES ===== */
 export interface ImageProduit {
   message: string;
@@ -48,12 +48,34 @@ export interface Produit {
   date_creation: string;
   date_update: string;
 }
+export interface Boutique {
+  _id: number;
+  nom: string;
+  description: string;
+  logo: string;
+  fond: string;
+  users: { id_user: number; email: string }[];
+  local: { id: number; position: string; loyer: number; date: string }[];
+  abonnement: { id: number; libelle: string; montant: number; date: string }[];
+  date_creation: string;
+  date_update: string;
+}
 
+export interface BaseCategorie {
+  id: number;
+  label: string;
+}
+
+export interface Categorie {
+  _id: number;
+  label: string;
+  description: string;
+  base: BaseCategorie | null;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class ClientService {
-
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
@@ -62,5 +84,10 @@ export class ClientService {
   getProduits(): Observable<Produit[]> {
     return this.http.get<Produit[]>(`${this.apiUrl}/produits`);
   }
-
+  getBoutiques(): Observable<Boutique[]> {
+    return this.http.get<Boutique[]>(`${this.apiUrl}/boutiques`);
+  }
+  getCategorie(): Observable<Categorie[]> {
+    return this.http.get<Categorie[]>(`${this.apiUrl}/produits/categories`);
+  }
 }

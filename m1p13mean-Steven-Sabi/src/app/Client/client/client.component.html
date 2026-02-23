@@ -24,24 +24,56 @@
 
 <!-- Filtre Catégorie + Total + Panier -->
 <div
-  class="flex flex-col sm:flex-row items-center justify-between mb-4 px-8 mt-4"
+  class="flex flex-col sm:flex-row items-center justify-center mb-4 px-8 mt-4 gap-5"
 >
   <!-- Gauche : catégorie + total -->
-  <div class="flex items-center gap-4">
+  <div class="flex items-center gap-4 flex-wrap">
     <!-- Sélecteur catégorie -->
     <select
-      class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+      [(ngModel)]="selectedCategorieId"
+      class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
       <option value="">Sélection Catégorie</option>
-      <option value="test1">Test 1</option>
-      <option value="test2">Test 2</option>
-      <option value="test3">Test 3</option>
+      <option *ngFor="let cat of categorie" [value]="cat._id">
+        {{ cat.label }}
+      </option>
     </select>
 
-    <!-- Total produits -->
-    <p class="text-sm sm:text-base font-medium text-gray-700">
-      Total produit : 0
-    </p>
+    <!-- Fourchette de prix -->
+    <div class="flex items-center gap-2">
+      <input
+        type="number"
+        [(ngModel)]="prixMin"
+        placeholder="Prix min"
+        class="w-28 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        min="0"
+      />
+      <span class="text-gray-500">—</span>
+      <input
+        type="number"
+        [(ngModel)]="prixMax"
+        placeholder="Prix max"
+        class="w-28 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        min="0"
+      />
+    </div>
+    <!-- Bouton optionnel pour reset -->
+    <button
+      (click)="resetFiltresPrix()"
+      class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm"
+    >
+      Effacer prix
+    </button>
+    <!-- select boutique -->
+     <select
+      [(ngModel)]="selectedBoutiqueId"
+      class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="">Sélection Boutique</option>
+      <option *ngFor="let bout of boutiques" [value]="bout._id" >
+        {{ bout.nom }}
+      </option>
+    </select>
   </div>
   <!-- Droite : bouton Panier -->
   <div class="flex justify-center">
@@ -67,8 +99,9 @@
   class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2 p-8 items-stretch"
 >
   <app-card-produit
-    *ngFor="let produit of produits"
+    *ngFor="let produit of produitsFiltres"
     [produit]="produit"
-  >
-  </app-card-produit>
+    [boutiqueNom]="getNomBoutique(produit.id_boutique)"
+    [soldeActif]="getSoldeActif(produit)"
+  ></app-card-produit>
 </div>

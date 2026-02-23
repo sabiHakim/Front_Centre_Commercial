@@ -4,7 +4,8 @@
   import { provideClientHydration } from '@angular/platform-browser';
   import { routes } from './app.routes';
   import { LucideAngularModule, Store } from 'lucide-angular';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+// import { authInterceptor } from './auth.interceptor'; withInterceptors([authInterceptor])
 
   export const appConfig: ApplicationConfig = {
     providers: [

@@ -1,13 +1,15 @@
 <!-- partie produit -->
+<!-- Image en haut carrée -->
+<!-- <img
+  [src]="produit.images[0].url"
+  alt="{{ produit.label }}"
+  class="w-full aspect-square object-cover rounded-lg mb-4 transform hover:scale-105 transition-transform duration-300"
+/> -->
+
 <div
   class="bg-white shadow-md rounded-xl p-4 hover:shadow-xl transition-shadow duration-300 max-w-xs flex flex-col h-full"
 >
-  <!-- Image en haut carrée -->
-  <!-- <img
-    [src]="produit.images[0].url"
-    alt="{{ produit.label }}"
-    class="w-full aspect-square object-cover rounded-lg mb-4 transform hover:scale-105 transition-transform duration-300"
-  /> -->
+  <!-- Images -->
   <div class="flex gap-2 mb-4">
     <img
       *ngFor="let img of produit.images"
@@ -21,11 +23,29 @@
   <div class="flex flex-col justify-between flex-1">
     <div>
       <h3 class="text-xl font-bold text-gray-800">{{ produit.label }}</h3>
+      <!-- Nom boutique -->
+      <p class="text-sm text-gray-500 font-medium">
+        Boutique: {{ boutiqueNom }}
+      </p>
+      <!-- Description -->
       <p class="text-sm text-gray-500 line-clamp-3">
-        Description: {{ produit.description }}
+        {{ produit.description }}
+      </p>
+      <br />
+      <p class="text-sm text-gray-500 line-clamp-3">
+        Catégories:
+        <span *ngFor="let cat of produit.categories; let last = last">
+          {{ cat.label }}<span *ngIf="!last">, </span>
+        </span>
+      </p>
+      <!-- Solde si actif -->
+      <p
+        *ngIf="soldeActif !== null"
+        class="text-sm text-red-600 font-semibold mt-1"
+      >
+        Promotion: {{ soldeActif }}%
       </p>
     </div>
-
     <div class="mt-2">
       <div class="flex justify-between mb-2">
         <p class="text-sm font-semibold text-blue-600">
@@ -37,13 +57,11 @@
           Stock: {{ produit.qte }}
         </p>
       </div>
-
       <button
         (click)="ajouterAuPanier()"
         [disabled]="produit.qte === 0"
         class="w-full bg-slate-600 text-white rounded-md py-2 px-4 flex items-center justify-center gap-2 hover:bg-slate-700 transition-colors"
       >
-        <lucide-angular [img]="StoreIcon" size="18"></lucide-angular>
         Ajouter Panier
       </button>
     </div>
