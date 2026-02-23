@@ -28,13 +28,12 @@ export class LoginComponent {
     });
   }
 
-  fillDemo(role: 'acheteur' | 'boutique' | 'admin') {
+  fillDemo(role: 'CLIENT' | 'BOUTIQUE' | 'ADMIN') {
     const demos = {
-      acheteur: { email: 'acheteur@demo.com', password: 'demo123' },
-      boutique: { email: 'boutique@demo.com', password: 'demo123' },
-      admin: { email: 'admin@demo.com', password: 'admin456' },
+      CLIENT: { email: 'client@email.com', password: 'client' },
+      BOUTIQUE: { email: 'boutique@email.com', password: 'boutique' },
+      ADMIN: { email: 'admin@email.com', password: 'admin' },
     };
-
     const creds = demos[role];
     this.loginForm.patchValue({
       email: creds.email,

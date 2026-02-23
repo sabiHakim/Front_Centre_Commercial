@@ -1,110 +1,101 @@
-// src/app/core/auth.service.ts
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
-import { PanierService } from './service/panier/panier.service';
 import { HttpClient } from '@angular/common/http';
+import { PanierService } from './service/panier/panier.service';
 import { environment } from '../environnements/environment';
-export interface Role {
-  _id: string;
-  label: string;
+
+export type UserRole = 'CLIENT' | 'BOUTIQUE' | 'ADMIN' | null;
+
+export interface AppUser {
+  email: string;
+  role: UserRole;
 }
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthService {
-  // getRoles
-  private http = inject(HttpClient);
-  private apiUrl = environment.apiUrl;
-  getRoles(): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.apiUrl}/users/roles`);
-  }
-  private userSubject = new BehaviorSubject<AppUser | null>(null);
-  user$ = this.userSubject.asObservable();
+export interface LoginResponse {
+  email: string;
+  role: {
+    id: number;
+    label: 'ADMIN' | 'BOUTIQUE' | 'ACHETEUR';
+  };
+  token: string;
+}
 
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  private http = inject(HttpClient);
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
 
+  private apiUrl = environment.apiUrl; // 🔁 adapte
+
+  private userSubject = new BehaviorSubject<AppUser | null>(null);
+  user$ = this.userSubject.asObservable();
+
   constructor(public panierService: PanierService) {}
 
-  initAuth(): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-    const savedRole = localStorage.getItem('userRole') as UserRole | null;
-    const savedEmail = localStorage.getItem('userEmail');
-    if (savedEmail && savedRole !== null) {
-      this.userSubject.next({ email: savedEmail, role: savedRole });
-    }
-  }
-  private mapRole(apiRole: any): UserRole {
-    if (!apiRole) return null;
-
-    switch (apiRole.label) {
-      case 'ADMIN':
-        return 'admin';
-      case 'BOUTIQUE':
-        return 'boutique';
-      case 'CLIENT':
-        return 'acheteur';
-      default:
-        return null;
-    }
-  }
+  // ─────────────────────────────
+  // LOGIN API
+  // ─────────────────────────────
   login(email: string, password: string): void {
     if (!isPlatformBrowser(this.platformId)) return;
     this.http
-      .post<any>('http://localhost:3000/users/connexion', {
+      .post<LoginResponse>(`${this.apiUrl}/users/connexion`, {
         email,
         password,
       })
       .subscribe({
         next: (res) => {
-          const role = this.mapRole(res.role.label);
-
           const user: AppUser = {
             email: res.email,
-            role,
+             role: res.role.label as UserRole,
           };
-
           this.userSubject.next(user);
+          // Sauvegarde
           localStorage.setItem('token', res.token);
-          localStorage.setItem('userEmail', res.email);
-          localStorage.setItem('userRole', role);
+          localStorage.setItem('userRole', user.role!);
+          localStorage.setItem('userEmail', user.email);
           localStorage.setItem('isLoggedIn', 'true');
 
-          this.redirectAfterLogin(role);
+          this.redirectAfterLogin(user.role!);
         },
         error: (err) => {
-          alert(err.error?.message || 'Erreur de connexion');
+          if (err.status === 401) {
+            alert('Email ou mot de passe incorrect');
+          } else {
+            alert('Erreur serveur');
+          }
         },
       });
   }
-  /**
-   * Déconnexion complète
-   */
-  logout(): void {
-    // Réinitialise l'état utilisateur
-    this.userSubject.next(null);
-
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('userRole');
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('panier');
+  // ─────────────────────────────
+  // INIT
+  // ─────────────────────────────
+  initAuth(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const savedRole = localStorage.getItem('userRole') as UserRole | null;
+    const savedEmail = localStorage.getItem('userEmail');
+    if (savedEmail && savedRole) {
+      this.userSubject.next({ email: savedEmail, role: savedRole });
     }
+  }
 
-    // 🔹 Réinitialiser le panier dans le service
-    this.panierService.clearPanier(); // <-- ajoute ça
-
-    // Redirection vers la page d'accueil
+  // ─────────────────────────────
+  // LOGOUT
+  // ─────────────────────────────
+  logout(): void {
+    this.userSubject.next(null);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.clear();
+    }
+    this.panierService.clearPanier();
     this.router.navigate(['/']);
   }
-  // ────────────────────────────────────────────────
-  // Getters utiles
-  // ────────────────────────────────────────────────
+
+  // ─────────────────────────────
+  // GETTERS
+  // ─────────────────────────────
   get currentUser(): AppUser | null {
     return this.userSubject.value;
   }
@@ -117,17 +108,15 @@ export class AuthService {
     return this.currentUser?.role === role;
   }
 
-  // ────────────────────────────────────────────────
-  // Redirection privée
-  // ────────────────────────────────────────────────
-
+  // ─────────────────────────────
+  // REDIRECTION
+  // ─────────────────────────────
   private redirectAfterLogin(role: Exclude<UserRole, null>): void {
     const routes: Record<Exclude<UserRole, null>, string> = {
-      admin: '/admin/dashboard',
-      boutique: '/boutique',
-      acheteur: '/client',
+      ADMIN: '/admin/dashboard',
+      BOUTIQUE: '/boutique',
+      CLIENT: '/client',
     };
-    const path = routes[role] || '/';
-    this.router.navigate([path]);
+    this.router.navigate([routes[role]]);
   }
 }

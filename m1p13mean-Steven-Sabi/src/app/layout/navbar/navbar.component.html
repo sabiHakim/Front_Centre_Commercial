@@ -9,11 +9,11 @@
       ></lucide-angular>
       <a
         [routerLink]="
-          auth.hasRole('admin')
+          auth.hasRole('ADMIN')
             ? '/admin/dashboard'
-            : auth.hasRole('boutique')
+            : auth.hasRole('BOUTIQUE')
               ? '/boutique'
-              : auth.hasRole('acheteur')
+              : auth.hasRole('CLIENT')
                 ? '/client'
                 : '/'
         "
@@ -47,12 +47,12 @@
       </ng-container>
 
       <!-- Acheteur -->
-      <ng-container *ngIf="auth.hasRole('acheteur')">
+      <ng-container *ngIf="auth.hasRole('CLIENT')">
         <a routerLink="/client/commandes" class="hover:text-blue-600">Mes Commandes</a>
       </ng-container>
 
       <!-- Boutique -->
-      <ng-container *ngIf="auth.hasRole('boutique')">
+      <ng-container *ngIf="auth.hasRole('BOUTIQUE')">
         <a
           routerLink="/boutique"
           class="flex items-center gap-1.5 hover:text-indigo-600"
@@ -75,7 +75,7 @@
       </ng-container>
 
       <!-- Admin -->
-      <ng-container *ngIf="auth.hasRole('admin')">
+      <ng-container *ngIf="auth.hasRole('ADMIN')">
         <a
           routerLink="/admin/dashboard"
           class="flex items-center gap-1.5 hover:text-purple-600"
@@ -127,19 +127,19 @@
       </a>
     </ng-container>
 
-    <ng-container *ngIf="auth.hasRole('acheteur')">
+    <ng-container *ngIf="auth.hasRole('CLIENT')">
       <a routerLink="/client" class="block py-2">Locaux</a>
       <a routerLink="/client/reservations" class="block py-2">Réservations</a>
       <a routerLink="/client/factures" class="block py-2">Factures</a>
       <a routerLink="/client/profil" class="block py-2">Profil</a>
     </ng-container>
 
-    <ng-container *ngIf="auth.hasRole('boutique')">
+    <ng-container *ngIf="auth.hasRole('BOUTIQUE')">
       <a routerLink="/boutique" class="block py-2">Dashboard</a>
       <a routerLink="/boutique/produits" class="block py-2">Produits</a>
     </ng-container>
 
-    <ng-container *ngIf="auth.hasRole('admin')">
+    <ng-container *ngIf="auth.hasRole('ADMIN')">
       <a routerLink="/admin/dashboard" class="block py-2">Administration</a>
       <a routerLink="/admin/boutiques" class="block py-2">Boutiques</a>
     </ng-container>
