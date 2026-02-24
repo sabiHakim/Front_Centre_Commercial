@@ -14,10 +14,14 @@ export interface AppUser {
 }
 
 export interface LoginResponse {
-  email: string;
-  role: {
-    id: number;
-    label: 'ADMIN' | 'BOUTIQUE' | 'ACHETEUR';
+  status: number;
+  user: {
+    _id: number;
+    email: string;
+    role: {
+      id: number;
+      label: 'ADMIN' | 'BOUTIQUE' | 'ACHETEUR';
+    };
   };
   token: string;
 }
@@ -41,15 +45,15 @@ export class AuthService {
   login(email: string, password: string): void {
     if (!isPlatformBrowser(this.platformId)) return;
     this.http
-      .post<LoginResponse>(`${this.apiUrl}/users/connexion`, {
+      .post<LoginResponse>(`${this.apiUrl}/auth/login`, {
         email,
         password,
       })
       .subscribe({
         next: (res) => {
           const user: AppUser = {
-            email: res.email,
-             role: res.role.label as UserRole,
+            email: res.user.email,
+            role: res.user.role.label as UserRole,
           };
           this.userSubject.next(user);
           // Sauvegarde
