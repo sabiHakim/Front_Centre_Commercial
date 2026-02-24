@@ -40,48 +40,53 @@ export class AuthService {
   constructor(public panierService: PanierService) {}
 
   // ─────────────────────────────
-  // LOGIN API
+  // LOGIN
   // ─────────────────────────────
   login(email: string, password: string): void {
     if (!isPlatformBrowser(this.platformId)) return;
+
     this.http
-      .post<LoginResponse>(`${this.apiUrl}/auth/login`, {
-        email,
-        password,
-      })
+      .post<LoginResponse>(`${this.apiUrl}/auth/login`, { email, password })
       .subscribe({
         next: (res) => {
           const user: AppUser = {
             email: res.user.email,
             role: res.user.role.label as UserRole,
           };
+
           this.userSubject.next(user);
-          // Sauvegarde
+
+          // Sauvegarde dans le localStorage
           localStorage.setItem('token', res.token);
-          localStorage.setItem('userRole', user.role!);
+          localStorage.setItem('user', JSON.stringify(user));
           localStorage.setItem('userEmail', user.email);
+          localStorage.setItem('userRole', user.role ?? '');
           localStorage.setItem('isLoggedIn', 'true');
 
           this.redirectAfterLogin(user.role!);
         },
         error: (err) => {
-          if (err.status === 401) {
-            alert('Email ou mot de passe incorrect');
-          } else {
-            alert('Erreur serveur');
-          }
+          if (err.status === 401) alert('Email ou mot de passe incorrect');
+          else alert('Erreur serveur');
         },
       });
   }
+
   // ─────────────────────────────
-  // INIT
+  // INIT AUTH
   // ─────────────────────────────
   initAuth(): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    const savedRole = localStorage.getItem('userRole') as UserRole | null;
-    const savedEmail = localStorage.getItem('userEmail');
-    if (savedEmail && savedRole) {
-      this.userSubject.next({ email: savedEmail, role: savedRole });
+
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      try {
+        const user: AppUser = JSON.parse(savedUser);
+        this.userSubject.next(user);
+      } catch (e) {
+        console.error('Erreur lors de la récupération du user depuis localStorage', e);
+        localStorage.removeItem('user');
+      }
     }
   }
 
@@ -113,7 +118,7 @@ export class AuthService {
   }
 
   // ─────────────────────────────
-  // REDIRECTION
+  // REDIRECTION APRÈS LOGIN
   // ─────────────────────────────
   private redirectAfterLogin(role: Exclude<UserRole, null>): void {
     const routes: Record<Exclude<UserRole, null>, string> = {

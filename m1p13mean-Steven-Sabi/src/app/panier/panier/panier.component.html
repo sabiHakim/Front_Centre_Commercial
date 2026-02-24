@@ -4,7 +4,6 @@
     <lucide-angular [img]="PackageIcon" size="28"></lucide-angular>
     Mon Panier
   </h2>
-
   <!-- Panier vide -->
   <div
     *ngIf="panierService.getPanier().length === 0"
@@ -25,26 +24,34 @@
   >
     <!-- Image + infos -->
     <div class="flex items-center gap-4 w-full sm:w-auto">
-      <img
-        [src]="p.image"
-        alt="{{ p.nom }}"
-        class="w-20 h-20 object-cover rounded-lg border"
-      />
+      <!-- Affiche la première image du produit -->
+      <div class="flex items-center gap-2">
+        <img
+          *ngFor="let img of p.images"
+          [src]="img.url"
+          alt="{{ p.label }}"
+          class="w-16 h-16 object-cover rounded-lg border"
+        />
+      </div>
 
       <div>
-        <p class="font-semibold text-lg">{{ p.nom }}</p>
-        <p class="text-sm text-gray-500">{{ p.prix }} Ar × {{ p.quantite }}</p>
+        <p class="font-semibold text-lg">{{ p.label }}</p>
+        <!-- Prix actuel × quantité -->
+        <p class="text-sm text-gray-500">
+          {{ p.prix[p.prix.length - 1]?.montant }} Ar × {{ p.quantite }}
+        </p>
       </div>
     </div>
 
     <!-- Actions -->
     <div class="flex items-center gap-6">
+      <!-- Total prix -->
       <p class="font-bold text-blue-700 text-lg">
-        {{ p.prix * p.quantite }} Ar
+        {{ (p.prix[p.prix.length - 1]?.montant ?? 0) * p.quantite }} Ar
       </p>
 
       <button
-        (click)="supprimer(p.id)"
+        (click)="supprimer(p._id)"
         class="flex items-center gap-1 text-red-600 hover:text-red-800 transition"
       >
         <lucide-angular [img]="TrashIcon" size="18"></lucide-angular>
@@ -56,6 +63,7 @@
   <!-- TOTAL -->
   <div class="flex justify-end items-center mt-8 text-xl font-bold gap-2">
     <button
+     (click)="commander()"
       class="flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white text-lg font-semibold px-6 py-3 rounded-xl shadow-lg transition-all active:scale-95"
     >
       <lucide-angular [img]="CreditCardIcon" size="22"></lucide-angular>

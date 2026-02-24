@@ -16,7 +16,7 @@ export class CardProduitComponent {
   @Input() soldeActif: number | null = null;
   protected readonly StoreIcon = ShoppingCart;
   // panier
-  constructor(private panierService: PanierService) {}
+  constructor(public panierService: PanierService) {}
   ajouterAuPanier() {
     this.panierService.addProduit(this.produit);
   }

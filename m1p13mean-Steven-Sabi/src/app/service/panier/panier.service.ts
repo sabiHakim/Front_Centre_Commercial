@@ -1,11 +1,11 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { Produit } from '../Client/client.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PanierService {
-
   private panier: any[] = [];
   private platformId = inject(PLATFORM_ID);
 
@@ -32,12 +32,12 @@ export class PanierService {
     return this.panier;
   }
 
-  addProduit(produit: any) {
-    if (produit.stock <= 0) return;
+  addProduit(produit: Produit) {
+    if (produit.qte <= 0) return;
 
-    const exist = this.panier.find(p => p.id === produit.id);
+    const exist = this.panier.find((p) => p._id === produit._id);
     if (exist) {
-      if (exist.quantite < produit.stock) exist.quantite++;
+      if (exist.quantite < produit.qte) exist.quantite++;
     } else {
       this.panier.push({ ...produit, quantite: 1 });
     }
@@ -46,7 +46,7 @@ export class PanierService {
   }
 
   removeProduit(id: number) {
-    this.panier = this.panier.filter(p => p.id !== id);
+    this.panier = this.panier.filter((p) => p._id !== id);
     this.savePanier();
   }
 
@@ -60,6 +60,9 @@ export class PanierService {
   }
 
   getTotalPrix(): number {
-    return this.panier.reduce((t, p) => t + (p.prix * p.quantite), 0);
+    return this.panier.reduce(
+      (t, p) => t + (p.prix[p.prix.length - 1]?.montant ?? 0) * p.quantite,
+      0,
+    );
   }
 }

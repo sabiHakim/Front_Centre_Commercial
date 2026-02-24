@@ -21,7 +21,6 @@
     </div>
   </div>
 </div>
-
 <!-- Filtre Catégorie + Total + Panier -->
 <div
   class="flex flex-col sm:flex-row items-center justify-center mb-4 px-8 mt-4 gap-5"
@@ -88,7 +87,7 @@
         *ngIf="panierService.getTotalCount() > 0"
         class="absolute -top-2 -right-2 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full"
       >
-        0
+        {{ panierService.getTotalCount() }}
       </span>
     </button>
   </div>

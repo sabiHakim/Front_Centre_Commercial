@@ -5,13 +5,13 @@
   import { routes } from './app.routes';
   import { LucideAngularModule, Store } from 'lucide-angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-// import { authInterceptor } from './auth.interceptor'; withInterceptors([authInterceptor])
+import { authInterceptor } from './auth.interceptor'; 
 
   export const appConfig: ApplicationConfig = {
     providers: [
       provideRouter(routes),
       provideClientHydration(),
-      provideHttpClient(),
+      provideHttpClient(withInterceptors([authInterceptor])),
       importProvidersFrom(
         LucideAngularModule.pick({
           Store,

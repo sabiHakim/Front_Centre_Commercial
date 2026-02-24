@@ -24,4 +24,7 @@ export class PanierComponent {
   supprimer(id: number) {
     this.panierService.removeProduit(id);
   }
+  commander(){
+    
+  }
 }
