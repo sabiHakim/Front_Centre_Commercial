@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule, CheckCircle, XCircle } from 'lucide-angular';
-import { CommandeclientServiceService,CommandeClient } from './commandeclient-service.service';
+import {
+  CommandeclientServiceService,
+  CommandeApi,
+} from './commandeclient-service.service';
 @Component({
   selector: 'app-commande-client',
   standalone: true,
@@ -11,9 +14,7 @@ import { CommandeclientServiceService,CommandeClient } from './commandeclient-se
   styleUrl: './commande-client.component.css',
 })
 export class CommandeClientComponent {
-  commandes: CommandeClient[] = [];
-  clientId = 1; // mock : client connecté id=1
-
+  commandes: CommandeApi[] = [];
   // icônes
   CheckCircleIcon = CheckCircle;
   XCircleIcon = XCircle;
@@ -23,19 +24,26 @@ export class CommandeClientComponent {
   ngOnInit() {
     this.load();
   }
-
-
   load() {
-    this.commandes = this.commandeService.getByClient(this.clientId);
+    this.commandeService.mesCommandes().subscribe({
+      next: (data) => {
+        this.commandes = data;
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
+  getTotalCommande(produits: { qte: number; prix: number }[]): number {
+    return produits.reduce((total, p) => total + p.qte * p.prix, 0);
+  }
+  // valider(id: number) {
+  //   this.commandeService.valider(id);
+  //   this.load();
+  // }
 
-  valider(id: number) {
-    this.commandeService.valider(id);
-    this.load();
-  }
-
-  refuser(id: number) {
-    this.commandeService.refuser(id);
-    this.load();
-  }
+  // refuser(id: number) {
+  //   this.commandeService.refuser(id);
+  //   this.load();
+  // }
 }

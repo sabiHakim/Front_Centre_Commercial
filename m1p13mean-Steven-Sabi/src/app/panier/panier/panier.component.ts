@@ -35,12 +35,13 @@ export class PanierComponent {
       return;
     }
     const commande = {
-      labele: "Commande d'utilisateur",
+      label: "Commande d'utilisateur",
       produits: panier.map((p: any) => ({
         id: p._id,
         nom: p.label,
         qte: p.quantite,
         duree: p.duree_panier,
+        prix: p.prix[p.prix.length - 1].montant,
       })),
     };
     this.commandeService.creerCommande(commande).subscribe({
