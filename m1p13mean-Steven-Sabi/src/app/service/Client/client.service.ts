@@ -24,18 +24,18 @@ export interface SoldeProduit {
 }
 
 export interface CategorieProduit {
-  id: number;
+  id: string;
   label: string;
 }
 
 export interface EtatProduit {
-  _id: number;
+  _id: string;
   libelle: string;
 }
 
 export interface Produit {
-  _id: number;
-  id_boutique: number;
+  _id: string;
+  id_boutique: string;
   label: string;
   description: string;
   qte: number;
@@ -49,25 +49,25 @@ export interface Produit {
   date_update: string;
 }
 export interface Boutique {
-  _id: number;
+  _id: string;
   nom: string;
   description: string;
   logo: string;
   fond: string;
-  users: { id_user: number; email: string }[];
-  local: { id: number; position: string; loyer: number; date: string }[];
-  abonnement: { id: number; libelle: string; montant: number; date: string }[];
+  users: { id_user: string; email: string }[];
+  local: { id: string; position: string; loyer: number; date: string }[];
+  abonnement: { id: string; libelle: string; montant: number; date: string }[];
   date_creation: string;
   date_update: string;
 }
 
 export interface BaseCategorie {
-  id: number;
+  id: string;
   label: string;
 }
 
 export interface Categorie {
-  _id: number;
+  _id: string;
   label: string;
   description: string;
   base: BaseCategorie | null;

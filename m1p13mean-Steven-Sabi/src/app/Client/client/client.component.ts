@@ -29,8 +29,8 @@ export class ClientComponent implements OnInit {
   produits: Produit[] = [];
   boutiques: Boutique[] = [];
   categorie: Categorie[] = [];
-  selectedCategorieId: number | '' = '';
-  selectedBoutiqueId: number | '' = '';
+  selectedCategorieId: string | '' = '';
+  selectedBoutiqueId: string | '' = '';
   searchTerm: string = '';
   prixMin: number | null = null;
   prixMax: number | null = null;
@@ -50,7 +50,7 @@ export class ClientComponent implements OnInit {
       this.categorie = res;
     });
   }
-  getNomBoutique(id_boutique: number): string {
+  getNomBoutique(id_boutique: string): string {
     const boutique = this.boutiques.find((b) => b._id === id_boutique);
     return boutique ? boutique.nom : 'Boutique inconnue';
   }
