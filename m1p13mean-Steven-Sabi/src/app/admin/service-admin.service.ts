@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../environnements/environment';
 
 export interface Paiement {
   mois: number;   // 1 = Janvier
@@ -6,10 +9,71 @@ export interface Paiement {
   paye: boolean;
 }
 
+export interface Boutique {
+  _id: string;
+  nom: string;
+  description: string;
+  logo: string;
+  fond: string;
+  users: { id_user: string; nom: string, prenom:string, contact:string, email: string }[];
+  local: { id: string; position: string; loyer: number; date: string }[];
+  abonnement: { id: string; libelle: string; montant: number; date: string }[];
+  date_creation: string;
+  date_update: string;
+}
+
+export interface Loyer {
+  _id: string;
+  id_boutique: string;
+  montant: number;
+  montant_payer: number;
+  mois: number;        // 1 - 12
+  annee: number;       // ex: 2025
+  boutique: Boutique;
+  date_creation: string;  // ISO string
+  date_update: string;    // ISO string
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceAdminService {
+  private apiUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) {}
+  
+  getAllBoutiques(): Observable<Boutique[]> {
+    return this.http.get<Boutique[]>(`${this.apiUrl}/boutiques`);
+  }
+
+  getAllLoyer(): Observable<Loyer[]> {
+    return this.http.get<Loyer[]>(`${this.apiUrl}/loyers`);
+  }
+
+  createLoyer(loyer: Partial<Loyer>): Observable<Loyer> {
+    return this.http.post<Loyer>(`${this.apiUrl}/loyers/create`, loyer);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   boutiques = [
     {
       id: 1,

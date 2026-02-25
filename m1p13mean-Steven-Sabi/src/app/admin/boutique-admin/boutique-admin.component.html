@@ -17,8 +17,9 @@
     <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
       <tr>
         <th class="px-6 py-4 text-left">Boutique</th>
-        <th class="px-6 py-4 text-left">Propriétaire</th>
-        <th class="px-6 py-4 text-center">Produits</th>
+        <th class="px-6 py-4 text-center">Propriétaire</th>
+        <th class="px-6 py-4 text-center">Email</th>
+        <th class="px-6 py-4 text-center">Contact</th>
         <th class="px-6 py-4 text-right">Actions</th>
       </tr>
     </thead>
@@ -31,16 +32,31 @@
             <p class="text-xs text-gray-500">{{ b.email }}</p>
           </div>
         </td>
-        <td class="px-6 py-4 text-gray-700">{{ b.proprietaire }}</td>
-        <td class="px-6 py-4 text-center font-medium">{{ b.produits }}</td>
+        <td class="px-6 py-4 text-gray-700 text-center">
+          {{ b.users?.[0]?.nom }} {{ b.users?.[0]?.prenom }}
+        </td>
+        <td class="px-6 py-4 text-gray-700 text-center">
+          {{ b.users?.[0]?.email}} 
+        </td>
+        <td class="px-6 py-4 text-gray-700 text-center">
+          {{ b.users?.[0]?.contact}}
+        </td>
+        <!-- <td class="px-6 py-4 text-center font-medium">{{ b.produits }}</td> -->
         <td class="px-6 py-4 text-right">
           <div class="flex justify-end gap-2">
-            <button
+            <!-- <button
               (click)="ouvrirModalEdition(b)"
-              class="p-2 rounded-lg bg-yellow-100 text-yellow-600 hover:bg-yellow-200 transition"
-              title="Modifier"
+              class="p-2 rounded-lg bg-emerald-100 text-emerald-600 hover:bg-emerald-200 hover:text-emerald-700 transition-all duration-200 shadow-sm hover:shadow-md"
+              title="Ajouter un payment de loyer"
             >
-              <lucide-angular [img]="EditIcon" size="16"></lucide-angular>
+              <lucide-angular [img]="DollarSignIcon" size="16"></lucide-angular>
+            </button> -->
+            <button
+              (click)="ouvrirModalLoyer(b)"
+              class="p-2 rounded-lg bg-emerald-100 text-emerald-600 hover:bg-emerald-200 hover:text-emerald-700 transition-all duration-200 shadow-sm hover:shadow-md"
+              title="Ajouter un payment de loyer"
+            >
+              <lucide-angular [img]="DollarSignIcon" size="16"></lucide-angular>
             </button>
             <button
               (click)="delete(b.id)"
@@ -69,7 +85,97 @@
       <button (click)="fermerModal()" class="text-gray-400 hover:text-gray-700 text-2xl font-bold" title="Fermer">&times;</button>
     </div>
 
-    <form (ngSubmit)="confirmer()" class="flex flex-col gap-4">
+    <form (ngSubmit)="payeLoyer()" class="flex flex-col gap-4">
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Nom de la boutique</label>
+        <div class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-lg text-gray-800">
+          {{ boutiqueForm.nom }}
+        </div>
+      </div>
+
+      <!-- Mois -->
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Mois et année à payer</label>
+        <select
+        [(ngModel)]="boutiqueForm.mois"
+        name="mois"
+        (ngModelChange)="updateLoyerRestant()"
+        class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+        required>
+          <option value="1">Janvier</option>
+          <option value="2">Février</option>
+          <option value="3">Mars</option>
+          <option value="4">Avril</option>
+          <option value="5">Mai</option>
+          <option value="6">Juin</option>
+          <option value="7">Juillet</option>
+          <option value="8">Août</option>
+          <option value="9">Septembre</option>
+          <option value="10">Octobre</option>
+          <option value="11">Novembre</option>
+          <option value="12">Décembre</option>
+        </select>
+
+        <!-- Année -->
+        <select
+        [(ngModel)]="boutiqueForm.annee"
+        name="annee"
+        (ngModelChange)="updateLoyerRestant()"
+        class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+        required>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+        </select>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Montant total du loyer</label>
+        <div class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-lg text-gray-800">
+          {{ boutiqueForm.local?.length
+              ? boutiqueForm.local[boutiqueForm.local.length - 1]?.loyer
+              : 'Aucun local'
+              | number 
+          }} Ar
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Montant déjà payer</label>
+        <div class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-lg text-gray-800">
+          {{ payer | number }} Ar
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Montant restant à payer</label>
+        <div class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-lg text-gray-800">
+          {{ loyerRestant | number }} Ar
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Payer un montant</label>
+        <input 
+          (ngModelChange)="isPaiementValide()" 
+          [(ngModel)]="boutiqueForm.montant"
+          type="text" name="montant" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+      </div>
+
+      <div class="flex justify-end gap-3 mt-4">
+        <button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition" (click)="fermerModal()">Annuler</button>
+        <button type="submit" class="px-4 py-2 rounded-lg text-white transition flex items-center gap-2
+          bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="!isPaiementValide()">
+          <lucide-angular [img]="CheckCircleIcon" size="16"></lucide-angular>
+          <!-- {{ mode === 'loyer' }} -->
+          Valider
+        </button>
+      </div>
+    </form>
+
+    <!-- <form (ngSubmit)="confirmer()" class="flex flex-col gap-4">
       <div class="flex flex-col">
         <label class="text-gray-600 text-sm mb-1">Nom</label>
         <input type="text" [(ngModel)]="boutiqueForm.nom" name="nom" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
@@ -104,6 +210,6 @@
           {{ mode === 'ajout' ? 'Ajouter' : 'Modifier' }}
         </button>
       </div>
-    </form>
+    </form> -->
   </div>
 </div>
