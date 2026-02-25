@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environnements/environment';
 export interface CommandeClient {
   id: number;
   produit: string;
@@ -12,6 +15,8 @@ export interface CommandeClient {
   providedIn: 'root',
 })
 export class CommandeclientServiceService {
+  constructor(private http: HttpClient) {}
+  private apiUrl = environment.apiUrl;
   private commandes: CommandeClient[] = [
     {
       id: 1,
@@ -41,7 +46,9 @@ export class CommandeclientServiceService {
       clientId: 2,
     },
   ];
-
+  creerCommande(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/commandes/create`, data);
+  }
   // récupérer toutes les commandes pour un client
   getByClient(clientId: number): CommandeClient[] {
     return this.commandes.filter((c) => c.clientId === clientId);

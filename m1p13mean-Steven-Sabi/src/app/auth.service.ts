@@ -26,7 +26,7 @@ export interface LoginResponse {
   token: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
@@ -53,9 +53,7 @@ export class AuthService {
             email: res.user.email,
             role: res.user.role.label as UserRole,
           };
-
           this.userSubject.next(user);
-
           // Sauvegarde dans le localStorage
           localStorage.setItem('token', res.token);
           localStorage.setItem('user', JSON.stringify(user));
