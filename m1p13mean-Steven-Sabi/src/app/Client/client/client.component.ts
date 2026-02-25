@@ -29,11 +29,12 @@ export class ClientComponent implements OnInit {
   produits: Produit[] = [];
   boutiques: Boutique[] = [];
   categorie: Categorie[] = [];
-  selectedCategorieId: string | '' = '';
-  selectedBoutiqueId: string | '' = '';
+  selectedCategorieId: string | null = null;
+  selectedBoutiqueId: string | null = null;
   searchTerm: string = '';
   prixMin: number | null = null;
   prixMax: number | null = null;
+  prixErreur: string | null = null;
   constructor(
     private clientService: ClientService,
     public panierService: PanierService,
@@ -72,38 +73,64 @@ export class ClientComponent implements OnInit {
   /** Produits filtrés par catégorie */
   get produitsFiltres(): Produit[] {
     let resultat = this.produits;
-    // 1. Recherche texte (souvent mis en premier car c'est le filtre le plus utilisé)
+
+    // 🔍 Recherche
     if (this.searchTerm?.trim()) {
-      const terme = this.searchTerm.trim().toLowerCase();
+      const terme = this.searchTerm.toLowerCase();
       resultat = resultat.filter(
         (p) =>
           p.label?.toLowerCase().includes(terme) ||
           p.description?.toLowerCase().includes(terme),
-        // Tu peux aussi chercher dans les catégories si tu veux :
-        // || p.categories?.some(c => c.label?.toLowerCase().includes(terme))
       );
     }
-    // 1. Filtre catégorie
-    if (this.selectedCategorieId !== '' && this.selectedCategorieId != null) {
-      const catId = Number(this.selectedCategorieId);
+
+    // 📂 Catégorie
+    if (this.selectedCategorieId !== null) {
+      const catId = this.selectedCategorieId;
       resultat = resultat.filter((p) =>
-        p.categories?.some((c) => Number(c.id) === catId),
+        p.categories?.some((c) => c.id === catId),
       );
     }
-    // 2. Filtre prix
-    if (this.prixMin != null && this.prixMin > 0) {
+
+    // 🏪 Boutique
+    if (this.selectedBoutiqueId !== null) {
+      resultat = resultat.filter(
+        (p) => p.id_boutique === this.selectedBoutiqueId,
+      );
+    }
+
+    // 💰 Prix
+    this.prixErreur = null;
+    if (
+      this.prixMin != null &&
+      this.prixMax != null &&
+      this.prixMin > this.prixMax
+    ) {
+      this.prixErreur =
+        'Le prix minimum doit être inférieur ou égal au prix maximum.';
+      return []; // ne renvoie aucun produit si erreur
+    }
+
+    if (this.prixMin != null) {
       resultat = resultat.filter((p) => this.getPrixActuel(p) >= this.prixMin!);
     }
-    if (this.prixMax != null && this.prixMax > 0) {
+
+    if (this.prixMax != null) {
       resultat = resultat.filter((p) => this.getPrixActuel(p) <= this.prixMax!);
     }
-    // 3-filtre-boutique
-    if (this.selectedBoutiqueId !== '' && this.selectedBoutiqueId != null) {
-      const boutiqueId = Number(this.selectedBoutiqueId);
-      resultat = resultat.filter((p) => Number(p.id_boutique) === boutiqueId);
-    }
+
     return resultat;
   }
+  onCategorieChange(value: string | null) {
+    this.selectedCategorieId = value === 'null' ? null : value;
+  }
+  onPrixChange() {
+  if (this.prixMin != null && this.prixMax != null && this.prixMin > this.prixMax) {
+    this.prixErreur = 'Le prix minimum doit être inférieur ou égal au prix maximum.';
+  } else {
+    this.prixErreur = null;
+  }
+}
   // filtre prix
   resetFiltresPrix() {
     this.prixMin = null;

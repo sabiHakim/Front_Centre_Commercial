@@ -30,12 +30,10 @@ export class PanierComponent {
   }
   commander() {
     const panier = this.panierService.getPanier();
-
     if (!panier || panier.length === 0) {
       alert('Panier vide');
       return;
     }
-
     const commande = {
       labele: "Commande d'utilisateur",
       produits: panier.map((p: any) => ({
@@ -45,12 +43,10 @@ export class PanierComponent {
         duree: p.duree_panier,
       })),
     };
-
     this.commandeService.creerCommande(commande).subscribe({
       next: (res) => {
         console.log('Commande envoyée', res);
         alert('Commande créée avec succès ');
-
         this.panierService.clearPanier();
       },
       error: (err) => {

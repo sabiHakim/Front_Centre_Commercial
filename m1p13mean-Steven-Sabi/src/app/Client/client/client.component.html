@@ -29,11 +29,12 @@
   <div class="flex items-center gap-4 flex-wrap">
     <!-- Sélecteur catégorie -->
     <select
+      (ngModelChange)="onCategorieChange($event)"
       [(ngModel)]="selectedCategorieId"
-      class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+      class="px-4 py-2 border border-gray-300 rounded-lg"
     >
-      <option value="">Sélection Catégorie</option>
-      <option *ngFor="let cat of categorie" [value]="cat._id">
+      <option [ngValue]="null">Sélection Catégorie</option>
+      <option *ngFor="let cat of categorie" [ngValue]="cat._id">
         {{ cat.label }}
       </option>
     </select>
@@ -46,6 +47,7 @@
         placeholder="Prix min"
         class="w-28 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         min="0"
+        (ngModelChange)="onPrixChange()"
       />
       <span class="text-gray-500">—</span>
       <input
@@ -54,7 +56,11 @@
         placeholder="Prix max"
         class="w-28 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         min="0"
+        (ngModelChange)="onPrixChange()"
       />
+      <p *ngIf="prixErreur" class="text-red-500 text-sm">
+        {{ prixErreur }}
+      </p>
     </div>
     <!-- Bouton optionnel pour reset -->
     <button
@@ -64,12 +70,12 @@
       Effacer prix
     </button>
     <!-- select boutique -->
-     <select
+    <select
       [(ngModel)]="selectedBoutiqueId"
       class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
     >
-      <option value="">Sélection Boutique</option>
-      <option *ngFor="let bout of boutiques" [value]="bout._id" >
+      <option [ngValue]="null">Sélection Boutique</option>
+      <option *ngFor="let bout of boutiques" [ngValue]="bout._id">
         {{ bout.nom }}
       </option>
     </select>
