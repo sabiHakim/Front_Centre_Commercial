@@ -7,8 +7,11 @@
         <tr>
           <th class="px-4 py-2 text-left">Produit</th>
           <th class="px-4 py-2 text-left">Prix</th>
+          <th class="px-4 py-2 text-left">Durée</th>
           <th class="px-4 py-2 text-center">Date</th>
           <th class="px-4 py-2 text-center">Statut</th>
+          <th class="px-4 py-2 ">Date expiration</th>
+
         </tr>
       </thead>
       <tbody>
@@ -18,10 +21,7 @@
             <ul class="space-y-1">
               <li *ngFor="let p of c.produits">
                 {{ p.nom }}
-                <span class="text-gray-500">
-                  (x{{ p.qte }}) 
-                </span>
-                <!-- - {{ p.prix | number }} Ar -->
+                <span class="text-gray-500"> (x{{ p.qte }}) </span>
               </li>
             </ul>
           </td>
@@ -30,7 +30,11 @@
           <td class="px-4 py-2 r">
             {{ getTotalCommande(c.produits) | number }} Ar
           </td>
-
+          <td class="px-4 py-2">
+            <ul class="space-y-1">
+              <li *ngFor="let p of c.produits">{{ p.duree }} jours</li>
+            </ul>
+          </td>
           <!-- Date de création -->
           <td class="px-4 py-2 text-center">
             {{ c.date_creation | date: "dd/MM/yyyy" }}
@@ -48,6 +52,11 @@
             >
               {{ c.statut.libelle }}
             </span>
+          </td>
+          <td class="text-center">
+            <!-- <div class="text-xs text-gray-500"> -->
+              Expire le {{ getDateExpiration(c) | date: "dd/MM/yyyy" }}
+            <!-- </div> -->
           </td>
         </tr>
       </tbody>
