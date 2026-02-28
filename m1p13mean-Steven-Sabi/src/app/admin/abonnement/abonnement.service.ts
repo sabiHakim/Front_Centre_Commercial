@@ -1,4 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environnements/environment';
+
 export interface Abonnement {
   id: number;
   label: string;
@@ -11,6 +15,47 @@ export interface Abonnement {
   providedIn: 'root',
 })
 export class AbonnementService {
+  private apiUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient) {}
+
+  getAllAbonnement(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/abonnements`);
+  }
+
+  getBoutiqueById(id : String): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/boutiques/ById/${id}`);
+  }
+
+  getAllAbonnementDemande(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/abonnements/demande`);
+  }
+
+  createAbonnement(item: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/abonnements/create`, item);
+  }
+
+  updateAbonnement(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/abonnements/update/${item._id}`, item);
+  }
+
+  updateAbonnementDemande(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/abonnements/demande/update/${item._id}`, item);
+  }
+
+  updateBoutique(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/boutiques/update/${item._id}`, item);
+  }
+
+
+
+
+
+
+
+
+
+
   private abonnements: Abonnement[] = [
     {
       id: 1,

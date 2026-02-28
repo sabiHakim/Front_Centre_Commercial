@@ -1,4 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environnements/environment';
+
 export interface Local {
   id: number;
   taille: string;
@@ -10,7 +14,63 @@ export interface Local {
   providedIn: 'root',
 })
 export class LocalService {
-  constructor() {}
+  private apiUrl = environment.apiUrl;
+  constructor(private http: HttpClient) {}
+
+  getAllLocal(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/locals`);
+  }
+
+  getAllLocalEtat(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/locals/etats`);
+  }
+
+  getBoutiqueById(id : String): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/boutiques/ById/${id}`);
+  }
+
+  getAllLocalDemande(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/locals/demande`);
+  }
+
+  createLocal(item: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/locals/create`, item);
+  }
+
+  updateLocal(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/locals/update/${item._id}`, item);
+  }
+
+  updateLocalDemande(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/locals/demande/update/${item._id}`, item);
+  }
+
+  updateBoutique(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/boutiques/update/${item._id}`, item);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   private locaux: Local[] = [
     { id: 1, taille: '50m²', position: 'RDC-01', loyer: 500000, etat: 'libre' },
     {

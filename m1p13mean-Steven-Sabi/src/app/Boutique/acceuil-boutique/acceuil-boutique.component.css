@@ -1,0 +1,60 @@
+.boutique-card {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 2rem auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s;
+  
+    &:hover {
+      transform: scale(1.03);
+    }
+  
+    .overlay {
+      backdrop-filter: blur(4px);
+      background-color: rgba(0,0,0,0.4);
+      color: #fff;
+      text-align: center;
+      padding: 2rem;
+  
+      .logo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        object-fit: cover;
+        margin-bottom: 1rem;
+      }
+  
+      .nom {
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+  
+      .description {
+        font-size: 1rem;
+        opacity: 0.9;
+      }
+    }
+  }
+  .edit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.2s;
+  
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+  

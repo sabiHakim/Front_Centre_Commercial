@@ -6,7 +6,7 @@
     </div>
     <div>
       <p class="text-gray-500 text-sm uppercase">Total boutiques</p>
-      <p class="text-2xl font-bold text-gray-800">{{ stats.total }}</p>
+      <p class="text-2xl font-bold text-gray-800">{{ boutiqueTotal }}</p>
     </div>
   </div>
 
@@ -17,7 +17,7 @@
     </div>
     <div>
       <p class="text-gray-500 text-sm uppercase">Payés</p>
-      <p class="text-2xl font-bold text-green-700">{{ stats.actives }}</p>
+      <p class="text-2xl font-bold text-green-700">{{ paye }}</p>
     </div>
   </div>
   <!-- Boutiques désactivées -->
@@ -27,7 +27,7 @@
     </div>
     <div>
       <p class="text-gray-500 text-sm uppercase">Non payés</p>
-      <p class="text-2xl font-bold text-red-700">{{ stats.desactivees }}</p>
+      <p class="text-2xl font-bold text-red-700">{{ nonPaye }}</p>
     </div>
   </div>
   <!-- Nouvelles boutiques -->
@@ -37,7 +37,7 @@
     </div>
     <div>
       <p class="text-gray-500 text-sm uppercase">Revenus</p>
-      <p class="text-2xl font-bold text-yellow-700">{{ stats.nouvelles }}</p>
+      <p class="text-2xl font-bold text-yellow-700">{{ revenue }}</p>
     </div>
   </div>
 </div>
@@ -86,7 +86,9 @@
       <tr>
         <th class="px-4 py-3 text-left">Boutique</th>
         <th class="px-4 py-3">Propriétaire</th>
-        <th class="px-4 py-3">Loyer</th>
+        <th class="px-4 py-3">Loyer à payer</th>
+        <th class="px-4 py-3">Montant déjà payer</th>
+        <th class="px-4 py-3">Rest a payer</th>
         <th class="px-4 py-3">Statut</th>
       </tr>
     </thead>
@@ -97,9 +99,15 @@
         class="border-t hover:bg-gray-50"
       >
         <td class="px-4 py-3 font-medium">{{ b.nom }}</td>
-        <td class="px-4 py-3 text-center">{{ b.proprietaire }}</td>
+        <td class="px-4 py-3 text-center">{{ b.users[0].nom }} {{ b.users[0].prenom }}</td>
         <td class="px-4 py-3 text-center">
-          {{ b.loyer | number }} Ar
+          {{ b.montantTotal | number }} Ar
+        </td>
+        <td class="px-4 py-3 text-center">
+          {{ b.montantPaye | number }} Ar
+        </td>
+        <td class="px-4 py-3 text-center">
+          {{ b.reste | number }} Ar
         </td>
 
         <!-- Statut -->
@@ -107,12 +115,12 @@
           <span
             class="px-3 py-1 rounded-full text-xs font-semibold"
             [ngClass]="
-              estPaye(b.id)
+              estPaye(b.reste)
                 ? 'bg-green-100 text-green-700'
                 : 'bg-red-100 text-red-700'
             "
           >
-            {{ estPaye(b.id) ? 'Payé' : 'Non payé' }}
+            {{ estPaye(b.reste) ? 'Payé' : 'Non payé' }}
           </span>
         </td>
       </tr>
