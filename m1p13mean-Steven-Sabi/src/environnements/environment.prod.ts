@@ -1,5 +1,5 @@
 export const environment = {
  production: true,
- apiUrl: 'http://localhost:3000'
+ apiUrl: 'https://projet-mean-backend-3da0.onrender.com'
 };
 // ng build --configuration production
