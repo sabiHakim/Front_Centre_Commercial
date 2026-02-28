@@ -37,14 +37,9 @@ export class CommandeClientComponent {
   getTotalCommande(produits: { qte: number; prix: number }[]): number {
     return produits.reduce((total, p) => total + p.qte * p.prix, 0);
   }
-  getDateExpiration(commande: any): Date | null {
-  if (!commande?.produits?.length) return null;
-
-  const date = new Date(commande.date_creation);
-  const dureeMax = Math.max(...commande.produits.map((p: any) => p.duree ?? 0));
-
-  date.setDate(date.getDate() + dureeMax);
-  return date;
-}
-
+  getExpirationParProduit(dateCreation: string, duree: number): Date {
+    const date = new Date(dateCreation);
+    date.setDate(date.getDate() + duree);
+    return date;
+  }
 }

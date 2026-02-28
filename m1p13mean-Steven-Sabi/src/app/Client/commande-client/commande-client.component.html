@@ -10,8 +10,7 @@
           <th class="px-4 py-2 text-left">Durée</th>
           <th class="px-4 py-2 text-center">Date</th>
           <th class="px-4 py-2 text-center">Statut</th>
-          <th class="px-4 py-2 ">Date expiration</th>
-
+          <th class="px-4 py-2">Date expiration</th>
         </tr>
       </thead>
       <tbody>
@@ -54,8 +53,13 @@
           </td>
           <td class="text-center">
             <!-- <div class="text-xs text-gray-500"> -->
-              Expire le {{ getDateExpiration(c) | date: "dd/MM/yyyy" }}
+            
             <!-- </div> -->
+            <ul class="space-y-1">
+              <li *ngFor="let p of c.produits">
+                 Expire le {{ getExpirationParProduit(c.date_creation, p.duree) | date:'dd/MM/yyyy' }}
+              </li>
+            </ul>
           </td>
         </tr>
       </tbody>
