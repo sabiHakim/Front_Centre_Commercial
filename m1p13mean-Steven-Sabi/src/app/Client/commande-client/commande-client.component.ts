@@ -46,13 +46,5 @@ export class CommandeClientComponent {
   date.setDate(date.getDate() + dureeMax);
   return date;
 }
-  // valider(id: number) {
-  //   this.commandeService.valider(id);
-  //   this.load();
-  // }
 
-  // refuser(id: number) {
-  //   this.commandeService.refuser(id);
-  //   this.load();
-  // }
 }

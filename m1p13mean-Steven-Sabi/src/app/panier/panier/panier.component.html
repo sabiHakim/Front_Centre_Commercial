@@ -38,7 +38,7 @@
         <p class="font-semibold text-lg">{{ p.label }}</p>
         <!-- Prix actuel × quantité -->
         <p class="text-sm text-gray-500">
-          {{ p.prix[p.prix.length - 1]?.montant }} Ar × {{ p.quantite }}
+          {{ p.prix[p.prix.length - 1]?.montant|number: "1.0-0" }} Ar × {{ p.quantite }}
         </p>
       </div>
     </div>
@@ -47,7 +47,11 @@
     <div class="flex items-center gap-6">
       <!-- Total prix -->
       <p class="font-bold text-blue-700 text-lg">
-        {{ (p.prix[p.prix.length - 1]?.montant ?? 0) * p.quantite }} Ar
+        {{
+          (p.prix[p.prix.length - 1]?.montant ?? 0) * p.quantite
+            | number: "1.0-0"
+        }}
+        Ar
       </p>
 
       <button
@@ -63,11 +67,11 @@
   <!-- TOTAL -->
   <div class="flex justify-end items-center mt-8 text-xl font-bold gap-2">
     <button
-     (click)="commander()"
+      (click)="commander()"
       class="flex items-center gap-3 bg-green-600 hover:bg-green-700 text-white text-lg font-semibold px-6 py-3 rounded-xl shadow-lg transition-all active:scale-95"
     >
       <lucide-angular [img]="CreditCardIcon" size="22"></lucide-angular>
-      Acheter — {{ panierService.getTotalPrix() }} Ar
+      Acheter — {{ panierService.getTotalPrix()| number: "1.0-0" }} Ar
     </button>
   </div>
 </div>
