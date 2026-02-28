@@ -37,13 +37,9 @@ export class CommandeClientComponent {
   getTotalCommande(produits: { qte: number; prix: number }[]): number {
     return produits.reduce((total, p) => total + p.qte * p.prix, 0);
   }
-  // valider(id: number) {
-  //   this.commandeService.valider(id);
-  //   this.load();
-  // }
-
-  // refuser(id: number) {
-  //   this.commandeService.refuser(id);
-  //   this.load();
-  // }
+  getExpirationParProduit(dateCreation: string, duree: number): Date {
+    const date = new Date(dateCreation);
+    date.setDate(date.getDate() + duree);
+    return date;
+  }
 }

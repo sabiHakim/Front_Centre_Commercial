@@ -58,7 +58,6 @@ export class ClientComponent implements OnInit {
   getSoldeActif(produit: Produit): number | null {
     const today = new Date();
     if (!produit.solde || produit.solde.length === 0) return null;
-
     const soldeActif = produit.solde.find((s) => {
       const debut = new Date(s.debut);
       const fin = new Date(s.fin);
