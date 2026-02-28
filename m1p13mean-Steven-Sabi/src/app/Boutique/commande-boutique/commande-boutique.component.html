@@ -7,48 +7,104 @@
       <thead class="bg-gray-50 uppercase text-gray-600">
         <tr>
           <th class="px-4 py-2 text-left">Client</th>
-          <th class="px-4 py-2 text-center">Produit</th>
-          <th class="px-4 py-2 text-center">Quantité</th>
-          <th class="px-4 py-2 text-center">Montant</th>
+          <th class="px-4 py-2 text-left">Email</th>
+          <th class="px-4 py-2 text-left">Contact</th>
           <th class="px-4 py-2 text-center">Date</th>
+          <th class="px-4 py-2 text-center">Total</th>
           <th class="px-4 py-2 text-center">Statut</th>
           <th class="px-4 py-2 text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let c of commandes" class="border-t hover:bg-gray-50">
-          <td class="px-4 py-2">{{ c.client }}</td>
-          <td class="px-4 py-2 text-center">{{ c.produit }}</td>
-          <td class="px-4 py-2 text-center">{{ c.quantite }}</td>
-          <td class="px-4 py-2 text-center">{{ c.montant | number }} Ar</td>
-          <td class="px-4 py-2 text-center">{{ c.date }}</td>
+          <td class="px-4 py-2">{{ c.user.nom }} {{ c.user.prenom }}</td>
+          <td class="px-4 py-2">{{ c.user.email }}</td>
+          <td class="px-4 py-2">{{ c.user.contact }}</td>
+          <td class="px-4 py-2 text-center">{{ c.date_creation | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td class="px-4 py-2">{{ c.total }} AR</td>
           <td class="px-4 py-2 text-center">
             <span
               [ngClass]="
-                c.statut === 'validée'
+                    c.statut.libelle === 'VALIDER'
                   ? 'bg-green-100 text-green-700 px-2 py-1 rounded'
-                  : c.statut === 'annulée'
+                  : c.statut.libelle === 'ANNULER'
                   ? 'bg-red-100 text-red-700 px-2 py-1 rounded'
                   : 'bg-yellow-100 text-yellow-700 px-2 py-1 rounded'
               "
             >
-              {{ c.statut }}
+              {{ c.statut.libelle }}
             </span>
           </td>
           <td class="px-4 py-2 text-center flex justify-center gap-2 items-center">
             <button
-              *ngIf="c.statut === 'en attente'"
-              (click)="valider(c.id)"
+              *ngIf="c.statut.libelle === 'ENVOYER'"
+              (click)="voirProduit(c)"
+              class="bg-yellow-600 p-2 rounded hover:bg-yellow-700"
+              title="Voir les produits"
+            >
+              <lucide-angular [img]="ListeIcon" size="18" class="text-white"></lucide-angular>
+            </button>
+            <button
+              *ngIf="c.statut.libelle === 'ENVOYER'"
+              (click)="valider(c)"
               class="bg-green-600 p-2 rounded hover:bg-green-700"
               title="Valider"
             >
               <lucide-angular [img]="CheckCircleIcon" size="18" class="text-white"></lucide-angular>
             </button>
-            <span *ngIf="c.statut !== 'en attente'" class="font-semibold text-gray-600">✔</span>
+            <button
+              *ngIf="c.statut.libelle === 'ENVOYER'"
+              (click)="annuler(c)"
+              class="bg-red-600 p-2 rounded hover:bg-red-700"
+              title="Annuler"
+            >
+              <lucide-angular [img]="XCircleIcon" size="18" class="text-white"></lucide-angular>
+            </button>
+            
+            <span *ngIf="c.statut.libelle !== 'ENVOYER'" class="font-semibold text-gray-600">✔</span>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-
 </div>
+
+<div
+*ngIf="modalOuvertListe"
+class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+>
+<div class="bg-white rounded-2xl w-full p-6 relative shadow-xl animate-slide-in">
+<div class="flex items-center justify-between mb-4 border-b pb-2">
+  <h3 class="text-xl font-semibold text-gray-800">
+    Liste des produits de la commande de {{commande.user.nom}} {{commande.user.prenom}}, le {{commande.date_creation}}
+  </h3>
+  <button (click)="fermerModal()" class="text-gray-400 hover:text-gray-700 text-2xl font-bold" title="Fermer">&times;</button>
+</div>
+<table class="min-w-full text-sm">
+<thead class="bg-gray-50 uppercase text-gray-600">
+  <tr>
+    <th class="px-4 py-2 text-left">Nom</th>
+    <th class="px-4 py-2 text-center">Quantiter</th>
+    <th class="px-4 py-2 text-center">Duree en commande</th>
+    <th class="px-4 py-2 text-center">Prix</th>
+  </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let a of commande.produits" class="border-t hover:bg-gray-50">
+    <td class="px-4 py-2">{{ a.label }}</td>
+    <td class="px-4 py-2 text-center">{{ a.qte }}</td>
+    <td class="px-4 py-2 text-center">{{ a.duree_panier}}</td>
+    <td class="px-4 py-2 text-center">{{ a.prix[a.prix.length-1].montant }}</td>
+  </tr>
+
+  <tr class="border-t hover:bg-gray-50">
+    <td class="px-4 py-2"></td>
+    <td class="px-4 py-2 text-center"></td>
+    <td class="px-4 py-2 text-center">Total :</td>
+    <td class="px-4 py-2 text-center">{{ total }}</td>
+  </tr>
+</tbody>
+</table>
+<button type="button" class="px-4 py-2 bg-gray-10 text-gray-700 rounded-lg hover:bg-gray-300 transition" (click)="fermerModal()">Annuler</button>
+</div>
+

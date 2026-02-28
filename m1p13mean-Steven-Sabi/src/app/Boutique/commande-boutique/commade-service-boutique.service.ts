@@ -1,4 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from './../../../environnements/environment';
 export interface Commande {
   id: number;
   client: string;
@@ -12,6 +15,36 @@ export interface Commande {
   providedIn: 'root',
 })
 export class CommadeServiceBoutiqueService {
+  private apiUrl = environment.apiUrl;
+  constructor(private http: HttpClient) {}
+
+  getAllCommande(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/commandes`);
+  }
+  getAllUser(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/users`);
+  }
+  getAllProduit(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/produits`);
+  }
+
+  updateCommande(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/commandes/update/${item._id}`, item);
+  }
+
+  addStockOut(item: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/stocks/create`, item);
+  }
+
+  updateProduit(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/produits/update/${item._id}`, item);
+  }
+
+
+
+
+
+
   private commandes: Commande[] = [
     {
       id: 1,

@@ -10,21 +10,30 @@
     <lucide-angular [img]="PlusCircleIcon" size="18"></lucide-angular>
     Ajouter une boutique
   </button>
+
+  <button
+    (click)="ouvrirModalAjoutCat()"
+    class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+  >
+    <lucide-angular [img]="PlusCircleIcon" size="18"></lucide-angular>
+    Ajouter une categorie de produits
+  </button>
 </div>
 
 <div class="overflow-x-auto bg-white shadow-md rounded-2xl">
   <table class="min-w-full text-sm">
-    <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+    <thead class="bg-gray-200 text-gray-600 uppercase text-xs">
       <tr>
         <th class="px-6 py-4 text-left">Boutique</th>
         <th class="px-6 py-4 text-center">Propriétaire</th>
         <th class="px-6 py-4 text-center">Email</th>
         <th class="px-6 py-4 text-center">Contact</th>
+        <th class="px-6 py-4 text-center">Etat</th>
         <th class="px-6 py-4 text-right">Actions</th>
       </tr>
     </thead>
     <tbody class="divide-y">
-      <tr *ngFor="let b of boutiques" class="hover:bg-gray-50 transition">
+      <tr *ngFor="let b of boutiques" class="hover:bg-gray-200 transition">
         <td class="px-6 py-4 flex items-center gap-4">
           <img [src]="b.logo" class="w-11 h-11 rounded-xl object-cover border" />
           <div>
@@ -40,6 +49,17 @@
         </td>
         <td class="px-6 py-4 text-gray-700 text-center">
           {{ b.users?.[0]?.contact}}
+        </td>
+        <td class="px-6 py-4 text-center">
+          <span
+            class="px-3 py-1 rounded-full text-xs font-semibold"
+            [ngClass]="{
+              'bg-green-100 text-green-700': b.etat?.libelle?.toLowerCase() === 'actif',
+              'bg-yellow-100 text-yellow-700': b.etat?.libelle?.toLowerCase() !== 'actif'
+            }"
+          >
+            {{ b.etat?.libelle }}
+          </span>
         </td>
         <!-- <td class="px-6 py-4 text-center font-medium">{{ b.produits }}</td> -->
         <td class="px-6 py-4 text-right">
@@ -59,11 +79,21 @@
               <lucide-angular [img]="DollarSignIcon" size="16"></lucide-angular>
             </button>
             <button
-              (click)="delete(b.id)"
-              class="p-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition"
-              title="Supprimer"
+              (click)="handleAction(b)"
+              class="p-2 rounded-lg transition shadow-sm hover:shadow-md"
+              [ngClass]="b.etat?.libelle?.toLowerCase() === 'actif'
+                ? 'bg-red-100 text-red-600 hover:bg-red-200'
+                : 'bg-green-100 text-green-600 hover:bg-green-200'"
+              [title]="b.etat?.libelle?.toLowerCase() === 'actif'
+                ? 'Rendre inactif'
+                : 'Rendre actif'"
             >
-              <lucide-angular [img]="TrashIcon" size="16"></lucide-angular>
+              <lucide-angular
+                [img]="b.etat?.libelle?.toLowerCase() === 'actif'
+                  ? XCircleIcon
+                  : CheckCircleIcon"
+                size="16">
+              </lucide-angular>
             </button>
           </div>
         </td>
@@ -80,7 +110,7 @@
   <div class="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-xl animate-slide-in">
     <div class="flex items-center justify-between mb-4 border-b pb-2">
       <h3 class="text-xl font-semibold text-gray-800">
-        {{ mode === 'ajout' ? 'Ajouter une boutique' : 'Modifier la boutique' }}
+        Payer le loyer
       </h3>
       <button (click)="fermerModal()" class="text-gray-400 hover:text-gray-700 text-2xl font-bold" title="Fermer">&times;</button>
     </div>
@@ -88,7 +118,7 @@
     <form (ngSubmit)="payeLoyer()" class="flex flex-col gap-4">
       <div class="flex flex-col">
         <label class="text-gray-600 text-sm mb-1">Nom de la boutique</label>
-        <div class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-lg text-gray-800">
+        <div class="border border-gray-200 bg-gray-200 px-3 py-2 rounded-lg text-gray-800">
           {{ boutiqueForm.nom }}
         </div>
       </div>
@@ -133,24 +163,20 @@
 
       <div class="flex flex-col">
         <label class="text-gray-600 text-sm mb-1">Montant total du loyer</label>
-        <div class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-lg text-gray-800">
-          {{ boutiqueForm.local?.length
-              ? boutiqueForm.local[boutiqueForm.local.length - 1]?.loyer
-              : 'Aucun local'
-              | number 
-          }} Ar
+        <div class="border border-gray-200 bg-gray-200 px-3 py-2 rounded-lg text-gray-800">
+          {{ montant | number }} Ar
         </div>
       </div>
 
       <div class="flex flex-col">
         <label class="text-gray-600 text-sm mb-1">Montant déjà payer</label>
-        <div class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-lg text-gray-800">
+        <div class="border border-gray-200 bg-gray-200 px-3 py-2 rounded-lg text-gray-800">
           {{ payer | number }} Ar
         </div>
       </div>
       <div class="flex flex-col">
         <label class="text-gray-600 text-sm mb-1">Montant restant à payer</label>
-        <div class="border border-gray-200 bg-gray-50 px-3 py-2 rounded-lg text-gray-800">
+        <div class="border border-gray-200 bg-gray-200 px-3 py-2 rounded-lg text-gray-800">
           {{ loyerRestant | number }} Ar
         </div>
       </div>
@@ -175,41 +201,150 @@
       </div>
     </form>
 
-    <!-- <form (ngSubmit)="confirmer()" class="flex flex-col gap-4">
+  </div>
+</div>
+
+<!-- Modale Ajout -->
+<div
+  *ngIf="modalAjoutOuvert"
+  class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+>
+  <div class="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-xl animate-slide-in">
+    <div class="flex items-center justify-between mb-4 border-b pb-2">
+      <h3 class="text-xl font-semibold text-gray-800">
+        {{ mode === 'ajout' ? 'Ajouter une boutique' : 'Modifier la boutique' }}
+      </h3>
+      <button (click)="fermerModal()" class="text-gray-400 hover:text-gray-700 text-2xl font-bold" title="Fermer">&times;</button>
+    </div>
+    
+    <form (ngSubmit)="ajoutBoutiqueAdmin()" class="flex flex-col gap-4">
       <div class="flex flex-col">
-        <label class="text-gray-600 text-sm mb-1">Nom</label>
-        <input type="text" [(ngModel)]="boutiqueForm.nom" name="nom" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+        <label class="text-gray-600 text-sm mb-1">Nom de la boutique</label>
+        <input type="text"  [(ngModel)]="boutique.nom" name="boutique" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+      </div>
+      <!-- Recherche Loyer -->
+      <div class="flex flex-col relative">
+        <label class="text-gray-600 text-sm mb-1">Rechercher un local</label>
+        <input
+          type="text"
+          [(ngModel)]="searchLocal"
+          name="searchLocal"
+          (input)="filterLocals()"
+          autocomplete="off"
+          class="border border-gray-300 px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-400"
+          placeholder="Position ou loyer"
+        />
+
+        <!-- Suggestions -->
+        <div *ngIf="filteredLocals.length > 0"
+            class="absolute top-full left-0 right-0 bg-white border rounded-lg shadow-md max-h-48 overflow-y-auto z-50">
+          <div *ngFor="let u of filteredLocals"
+              (click)="selectLocal(u)"
+              class="px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm">
+            {{ u.position }} — {{ u.taille }}
+          </div>
+        </div>
+      </div>
+
+      
+
+      <div class="flex flex-col">
+        <input hidden type="text" readonly [(ngModel)]="localForm.position" name="position" class="border border-gray-300 bg-gray-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+      </div>
+
+      <!-- Recherche utilisateur -->
+      <div class="flex flex-col relative">
+        <label class="text-gray-600 text-sm mb-1">Rechercher un propriétaire</label>
+        <input
+          type="text"
+          [(ngModel)]="searchUser"
+          name="searchUser"
+          (input)="filterUsers()"
+          autocomplete="off"
+          class="border border-gray-300 px-3 py-2 rounded-lg focus:ring-2 focus:ring-blue-400"
+          placeholder="Nom, prénom ou email"
+        />
+
+        <!-- Suggestions -->
+        <div *ngIf="filteredUsers.length > 0"
+            class="absolute top-full left-0 right-0 bg-white border rounded-lg shadow-md max-h-48 overflow-y-auto z-50">
+          <div *ngFor="let u of filteredUsers"
+              (click)="selectUser(u)"
+              class="px-3 py-2 hover:bg-blue-50 cursor-pointer text-sm">
+            {{ u.nom }} {{ u.prenom }} — {{ u.email }} - {{ u.contact }}
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Nom du proprietaire</label>
+        <input type="text" readonly [(ngModel)]="boutique.user.nom" name="nom" class="border border-gray-300 bg-gray-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
       </div>
 
       <div class="flex flex-col">
-        <label class="text-gray-600 text-sm mb-1">Propriétaire</label>
-        <input type="text" [(ngModel)]="boutiqueForm.proprietaire" name="proprietaire" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+        <label class="text-gray-600 text-sm mb-1">Prénom du proprietaire</label>
+        <input type="text" readonly [(ngModel)]="boutique.user.prenom" name="prenom" class="border border-gray-300 bg-gray-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
       </div>
 
       <div class="flex flex-col">
         <label class="text-gray-600 text-sm mb-1">Email</label>
-        <input type="email" [(ngModel)]="boutiqueForm.email" name="email" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+        <input type="email" readonly [(ngModel)]="boutique.user.email" name="email" class="border border-gray-300 bg-gray-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
       </div>
 
       <div class="flex flex-col">
-        <label class="text-gray-600 text-sm mb-1">Nombre de produits</label>
-        <input type="number" [(ngModel)]="boutiqueForm.produits" name="produits" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
-      </div>
-
-      <div class="flex flex-col">
-        <label class="text-gray-600 text-sm mb-1">URL du logo</label>
-        <input type="text" [(ngModel)]="boutiqueForm.logo" name="logo" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" />
+        <label class="text-gray-600 text-sm mb-1">Contact</label>
+        <input type="text" readonly [(ngModel)]="boutique.user.contact" name="contact" class="border border-gray-300 bg-gray-200 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
       </div>
 
       <div class="flex justify-end gap-3 mt-4">
         <button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition" (click)="fermerModal()">Annuler</button>
         <button type="submit" class="px-4 py-2 rounded-lg text-white transition flex items-center gap-2
           bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          [disabled]="!boutiqueForm.nom || !boutiqueForm.proprietaire || !boutiqueForm.email || !boutiqueForm.produits">
+          [disabled]="!boutique.user.nom || !boutique.nom || !localForm.position">
           <lucide-angular [img]="mode === 'ajout' ? PlusCircleIcon : EditIcon" size="16"></lucide-angular>
           {{ mode === 'ajout' ? 'Ajouter' : 'Modifier' }}
         </button>
       </div>
-    </form> -->
+    </form>
   </div>
 </div>
+
+
+<!-- Modale Ajout -->
+<div
+  *ngIf="modaleCategorie"
+  class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+>
+  <div class="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-xl animate-slide-in">
+    <div class="flex items-center justify-between mb-4 border-b pb-2">
+      <h3 class="text-xl font-semibold text-gray-800">
+        Ajouter une categorie de produit
+      </h3>
+      <button (click)="fermerModal()" class="text-gray-400 hover:text-gray-700 text-2xl font-bold" title="Fermer">&times;</button>
+    </div>
+    
+    <form (ngSubmit)="ajoutCategorie()" class="flex flex-col gap-4">
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Nom</label>
+        <input type="text"  [(ngModel)]="categorie.label" name="nom" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+      </div>
+      <div class="flex flex-col">
+        <label class="text-gray-600 text-sm mb-1">Description</label>
+        <input type="text"  [(ngModel)]="categorie.description" name="description" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+      </div>
+
+      <div class="flex justify-end gap-3 mt-4">
+        <button type="button" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition" (click)="fermerModal()">Annuler</button>
+        <button type="submit" class="px-4 py-2 rounded-lg text-white transition flex items-center gap-2
+          bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="!categorie.label || !categorie.description">
+          <lucide-angular [img]="mode === 'ajout' ? PlusCircleIcon : EditIcon" size="16"></lucide-angular>
+          Ajouter
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
