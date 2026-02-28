@@ -13,7 +13,7 @@ import {
   templateUrl: './commande-client.component.html',
   styleUrl: './commande-client.component.css',
 })
-export class CommandeClientComponent {
+export class CommandeClientComponent implements OnInit {
   commandes: CommandeApi[] = [];
   // icônes
   CheckCircleIcon = CheckCircle;

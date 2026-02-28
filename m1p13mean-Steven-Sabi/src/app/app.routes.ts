@@ -13,13 +13,16 @@ import { LocalComponent } from './admin/local/local.component';
 import { AbonnementComponent } from './admin/abonnement/abonnement.component';
 import { CommandeBoutiqueComponent } from './Boutique/commande-boutique/commande-boutique.component';
 import { CommandeClientComponent } from './Client/commande-client/commande-client.component';
+import { CommandeRefuserComponent } from './Client/commande-client/commande-refuser/commande-refuser.component';
 export const routes: Routes = [
   { path: 'inscription', component: InscriptionComponent },
   { path: 'connexion', component: LoginComponent },
-  // client
+  // client /
   { path: 'client', component: ClientComponent },
   { path: 'panier', component: PanierComponent },
   { path: 'client/commandes', component: CommandeClientComponent },
+  { path: 'client/commandes-refuser', component: CommandeRefuserComponent },
+
 
   // admin
   { path: 'admin/dashboard', component: AcceuilComponentAdmin },

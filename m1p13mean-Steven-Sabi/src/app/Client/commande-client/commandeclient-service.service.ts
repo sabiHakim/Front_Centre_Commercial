@@ -30,6 +30,11 @@ export class CommandeclientServiceService {
       `${this.apiUrl}/commandes/mes-commandes`,
     );
   }
+    mesCommandesRefuser(): Observable<CommandeApi[]> {
+    return this.http.get<CommandeApi[]>(
+      `${this.apiUrl}/commandes/mes-commandes-refuser`,
+    );
+  }
   // valider(id: number) {
   //   const c = this.commandes.find((c) => c.id === id);
   //   if (c) c.statut = 'validée';

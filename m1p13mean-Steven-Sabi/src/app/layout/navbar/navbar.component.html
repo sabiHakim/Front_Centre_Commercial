@@ -48,7 +48,12 @@
 
       <!-- Acheteur -->
       <ng-container *ngIf="auth.hasRole('CLIENT')">
-        <a routerLink="/client/commandes" class="hover:text-blue-600">Mes Commandes</a>
+        <a routerLink="/client/commandes" class="hover:text-blue-600"
+          >Mes Commandes</a
+        >
+        <a routerLink="/client/commandes-refuser" class="hover:text-blue-600"
+          >Commandes refuser</a
+        >
       </ng-container>
 
       <!-- Boutique -->
@@ -66,10 +71,10 @@
         <a routerLink="/boutique/produits" class="hover:text-indigo-600">
           Produits
         </a>
-         <a routerLink="/boutique/loyers" class="hover:text-indigo-600">
+        <a routerLink="/boutique/loyers" class="hover:text-indigo-600">
           Loyers
         </a>
-         <a routerLink="/boutique/commande" class="hover:text-indigo-600">
+        <a routerLink="/boutique/commande" class="hover:text-indigo-600">
           Commandes
         </a>
       </ng-container>
@@ -89,12 +94,10 @@
         <a routerLink="/admin/boutiques" class="hover:text-purple-600"
           >Boutiques</a
         >
-         <a routerLink="/admin/abonnement" class="hover:text-purple-600"
+        <a routerLink="/admin/abonnement" class="hover:text-purple-600"
           >Abonnement</a
         >
-         <a routerLink="/admin/local" class="hover:text-purple-600"
-          >Local</a
-        >
+        <a routerLink="/admin/local" class="hover:text-purple-600">Local</a>
       </ng-container>
 
       <!-- 🔹 User / logout -->
@@ -128,10 +131,12 @@
     </ng-container>
 
     <ng-container *ngIf="auth.hasRole('CLIENT')">
-      <a routerLink="/client" class="block py-2">Locaux</a>
-      <a routerLink="/client/reservations" class="block py-2">Réservations</a>
-      <a routerLink="/client/factures" class="block py-2">Factures</a>
-      <a routerLink="/client/profil" class="block py-2">Profil</a>
+      <a routerLink="/client/commandes" class="hover:text-blue-600"
+        >Mes Commandes</a
+      >
+      <a routerLink="/client/commandes-refuser" class="hover:text-blue-600"
+        >Commandes refuser</a
+      >
     </ng-container>
 
     <ng-container *ngIf="auth.hasRole('BOUTIQUE')">
