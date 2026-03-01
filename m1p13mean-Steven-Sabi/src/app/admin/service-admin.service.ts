@@ -34,6 +34,22 @@ export interface Loyer {
   date_update: string;    // ISO string
 }
 
+export interface Role {
+  id: number;
+  label: string;
+}
+
+export interface User {
+  nom: string;
+  prenom: string;
+  password: string;
+  email: string;
+  contact: string;
+  role: Role;
+  date_creation: string;  // ISO date
+  date_update: string;    // ISO date
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -42,17 +58,51 @@ export class ServiceAdminService {
 
   constructor(private http: HttpClient) {}
   
-  getAllBoutiques(): Observable<Boutique[]> {
-    return this.http.get<Boutique[]>(`${this.apiUrl}/boutiques`);
+  getAllBoutiques(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/boutiques`);
   }
 
   getAllLoyer(): Observable<Loyer[]> {
     return this.http.get<Loyer[]>(`${this.apiUrl}/loyers`);
   }
 
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/users`);
+  }
+
+  getAllLocals(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/locals`);
+  }
+
   createLoyer(loyer: Partial<Loyer>): Observable<Loyer> {
     return this.http.post<Loyer>(`${this.apiUrl}/loyers/create`, loyer);
   }
+
+  createBoutique(boutique: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/boutiques/create`, boutique);
+  }
+
+  updateLocal(local: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/locals/update/${local._id}`, local);
+  }
+
+  updateUser(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/users/update/${item._id}`, item);
+  }
+
+  updateBoutique(item: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/boutiques/update/${item._id}`, item);
+  }
+
+  getAllAbonnement(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/abonnements`);
+  }
+
+  createCategorie(item: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/produits/categories/create`, item);
+  }
+
+  
 
 
 

@@ -1,42 +1,66 @@
-<div class="max-w-4xl mx-auto mt-6">
-  <h2 class="text-2xl font-bold mb-4">Gestion des locaux</h2>
+<div class="flex items-center justify-between mb-4 mt-4 px-10">
+  <h2 class="text-xl flex items-center gap-3 text-gray-800">Gestion des Locals</h2>
 
+  <button
+    (click)="ouvrirModal()"
+    class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+  >
+    <lucide-angular [img]="PlusCircleIcon" size="18"></lucide-angular>
+    Ajouter un Local
+  </button>
+  <button
+    (click)="ouvrirModalListe()"
+    class="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-blue-700 transition"
+  >
+    <lucide-angular [img]="ListIcon" size="18"></lucide-angular>
+    Voir les demandes de local
+  </button>
+</div>
   <!-- Formulaire Ajout / Edition -->
-  <div class="bg-white p-5 rounded-xl shadow mb-6">
+  <!-- <div class="bg-white p-5 rounded-xl shadow mb-6">
     <h3 class="font-semibold mb-2">
-      {{ editId ? "Modifier" : "Ajouter" }} un local
+      {{ editId ? "Modifier" : "Ajouter" }} un Local
     </h3>
     <div class="flex flex-col gap-3">
       <input
         type="text"
-        [(ngModel)]="taille"
-        placeholder="Taille"
-        class="border rounded px-3 py-2"
-      />
-      <input
-        type="text"
-        [(ngModel)]="position"
-        placeholder="Position"
+        [(ngModel)]="label"
+        placeholder="Label"
         class="border rounded px-3 py-2"
       />
       <input
         type="number"
-        [(ngModel)]="loyer"
-        placeholder="Loyer"
+        [(ngModel)]="montant"
+        placeholder="Montant"
         class="border rounded px-3 py-2"
       />
-      <select [(ngModel)]="etat" class="border rounded px-3 py-2">
-        <option value="libre">Libre</option>
-        <option value="occupé">Occupé</option>
-      </select>
+      <input
+        type="text"
+        [(ngModel)]="description"
+        placeholder="Description"
+        class="border rounded px-3 py-2"
+      />
+      <input
+        type="number"
+        [(ngModel)]="prioriter"
+        placeholder="Priorité"
+        class="border rounded px-3 py-2"
+      />
 
+      <input
+        type="number"
+        [(ngModel)]="duree"
+        placeholder="Durée"
+        class="border rounded px-3 py-2"
+      />
       <button
         (click)="submit()"
-        [disabled]="!taille || !position || !loyer || !etat"
+        [disabled]="!label || !montant || !description || !prioriter || !date"
         class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {{ editId ? "Modifier" : "Ajouter" }}
       </button>
+
       <button
         *ngIf="editId"
         (click)="resetForm()"
@@ -45,41 +69,32 @@
         Annuler
       </button>
     </div>
-  </div>
+  </div> -->
 
-  <!-- Tableau locaux -->
+  <!-- Tableau Locals -->
   <div class="bg-white p-5 rounded-xl shadow">
     <table class="min-w-full text-sm">
       <thead class="bg-gray-50 uppercase text-gray-600">
         <tr>
-          <th class="px-4 py-2 text-left">Taille</th>
-          <th class="px-4 py-2 text-center">Position</th>
+          <th class="px-4 py-2 text-left">Position</th>
+          <th class="px-4 py-2 text-center">Taille</th>
           <th class="px-4 py-2 text-center">Loyer</th>
           <th class="px-4 py-2 text-center">Etat</th>
-          <th class="px-4 py-2 text-center">Actions</th>
+          <th class="px-4 py-2 text-center">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let l of locaux" class="border-t hover:bg-gray-50">
-          <td class="px-4 py-2">{{ l.taille }}</td>
-          <td class="px-4 py-2 text-center">{{ l.position }}</td>
-          <td class="px-4 py-2 text-center">{{ l.loyer | number }} Ar</td>
-          <td class="px-4 py-2 text-center">
-            <span
-              [ngClass]="
-                l.etat === 'libre'
-                  ? 'text-green-600 font-semibold'
-                  : 'text-red-600 font-semibold'
-              "
-            >
-              {{ l.etat }}
-            </span>
-          </td>
+        <tr *ngFor="let a of Locals" class="border-t hover:bg-gray-50">
+          <td class="px-4 py-2">{{ a.position }}</td>
+          <td class="px-4 py-2 text-center">{{ a.taille }} m3</td>
+          <td class="px-4 py-2 text-center">{{ a.loyer[a.loyer.length-1].montant }} Ar</td>
+          <td class="px-4 py-2 text-center">{{ a.etat.libelle }}</td>
           <td
             class="px-4 py-2 text-center flex justify-center gap-2 items-center"
           >
+            <!-- Modifier -->
             <button
-              (click)="edit(l)"
+              (click)="ouvrirModalEdit(a)"
               class="bg-yellow-400 p-2 rounded hover:bg-yellow-500"
               title="Modifier"
             >
@@ -89,20 +104,144 @@
                 class="text-white"
               ></lucide-angular>
             </button>
-            <button
-              (click)="delete(l.id)"
-              class="bg-red-600 p-2 rounded hover:bg-red-700"
-              title="Supprimer"
-            >
-              <lucide-angular
-                [img]="Trash2"
-                size="18"
-                class="text-white"
-              ></lucide-angular>
-            </button>
           </td>
         </tr>
       </tbody>
     </table>
+    <div
+      *ngIf="modalOuvert"
+      class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+    >
+      <div class="bg-white rounded-2xl w-full max-w-md p-6 relative shadow-xl animate-slide-in">
+        <div class="flex items-center justify-between mb-4 border-b pb-2">
+          <h3 class="text-xl font-semibold text-gray-800">
+            {{ mode === 'add' ? 'Ajouter un Local' : "Modifier le local" }}
+          </h3>
+          <button (click)="fermerModal()" class="text-gray-400 hover:text-gray-700 text-2xl font-bold" title="Fermer">&times;</button>
+        </div>
+        
+        <form (ngSubmit)="valide()" class="flex flex-col gap-4">
+          <div class="flex flex-col">
+            <label class="text-gray-600 text-sm mb-1">Position</label>
+            <input type="text"  [(ngModel)]="LocalForm.position" name="position" class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+          </div>
+
+
+          <div class="flex flex-col">
+            <label class="text-gray-600 text-sm mb-1">Taille (en m3)</label>
+            <input type="number" [(ngModel)]="LocalForm.taille" name="taille" class="border border-gray-300 bg-gray-10 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition" required />
+          </div>
+
+          <div class="flex flex-col">
+            <label class="text-gray-600 text-sm mb-1">Loyer (en Ar)</label>
+          
+            <input
+              type="text"
+              [(ngModel)]="LocalForm.montant"
+              name="loyer"
+              class="border border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+            />
+          </div>
+
+          <div class="flex flex-col">
+            <label class="text-gray-600 text-sm mb-1">État</label>
+        
+            <select
+              [(ngModel)]="LocalForm.etat_libelle"
+              name="etat"
+              class="border border-gray-300 bg-gray-10 px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition"
+              required
+            >
+              <option value="LIBRE">LIBRE</option>
+              <option value="OCCUPE">OCCUPÉ</option>
+              <option value="RESERVE">RÉSERVÉ</option>
+            </select>
+          </div>
+
+          <div class="flex justify-end gap-3 mt-4">
+            <button type="button" class="px-4 py-2 bg-gray-10 text-gray-700 rounded-lg hover:bg-gray-300 transition" (click)="fermerModal()">Annuler</button>
+            <button type="submit" class="px-4 py-2 rounded-lg text-white transition flex items-center gap-2
+              bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              [disabled]="!LocalForm.position || !LocalForm.taille || !LocalForm.montant || !LocalForm.etat_libelle">
+              <lucide-angular [img]="mode === 'add' ? PlusCircleIcon : EditIcon" size="16"></lucide-angular>
+              {{ mode === 'add' ? 'Ajouter' : 'Modifier' }}
+            </button>
+          </div>
+        </form>
+      </div>
+  </div>
+  <div
+    *ngIf="modalOuvertListe"
+    class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+  >
+  <div class="bg-white rounded-2xl w-full p-6 relative shadow-xl animate-slide-in">
+    <div class="flex items-center justify-between mb-4 border-b pb-2">
+      <h3 class="text-xl font-semibold text-gray-800">
+        {{ mode === 'add' ? 'Ajouter un Local' : "Modifier l'Local" }}
+      </h3>
+      <button (click)="fermerModal()" class="text-gray-400 hover:text-gray-700 text-2xl font-bold" title="Fermer">&times;</button>
+    </div>
+  <table class="min-w-full text-sm">
+    <thead class="bg-gray-50 uppercase text-gray-600">
+      <tr>
+        <th class="px-4 py-2 text-left">Local</th>
+        <th class="px-4 py-2 text-center">Prix</th>
+        <th class="px-4 py-2 text-center">Boutique</th>
+        <th class="px-4 py-2 text-center">Proprietaire</th>
+        <th class="px-4 py-2 text-center">Email</th>
+        <th class="px-4 py-2 text-center">Contact</th>
+        <th class="px-4 py-2 text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of LocalDemande" class="border-t hover:bg-gray-50">
+        <td class="px-4 py-2">{{ a.local.position }}</td>
+        <td class="px-4 py-2 text-center">{{ a.local.loyer[a.local.loyer.length-1].montant | number }} Ar</td>
+        <td class="px-4 py-2 text-center">{{ a.boutique.nom }}</td>
+        <td class="px-4 py-2 text-center">{{ a.user.nom }} - {{ a.user.prenom}}</td>
+        <td class="px-4 py-2 text-center">{{ a.user.email }}</td>
+        <td class="px-4 py-2 text-center">{{ a.user.contact }}</td>
+        <td
+          class="px-4 py-2 text-center flex justify-center gap-2 items-center"
+        >
+        <div class="flex justify-end gap-3 mt-4">
+
+          <!-- Si en attente -->
+          <ng-container *ngIf="a.statut === 'EN_ATTENTE'; else statutNormal">
+            <button
+              (click)="validerDemande(a)"
+              class="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition flex items-center gap-2"
+              title="Valider"
+            >
+              <lucide-angular [img]="CheckCircleIcon" size="16"></lucide-angular>
+              
+            </button>
+        
+            <button
+              (click)="refuserDemande(a)"
+              class="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition flex items-center gap-2"
+              title="Refuser"
+            >
+              <lucide-angular [img]="XCircleIcon" size="16"></lucide-angular>
+              
+            </button>
+          </ng-container>
+        
+          <!-- Sinon afficher statut -->
+          <ng-template #statutNormal>
+            <span class="px-4 py-2 rounded-lg bg-blue-200 text-gray-700">
+              {{ a.statut }}
+            </span>
+          </ng-template>
+        
+        </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" class="px-4 py-2 bg-gray-10 text-gray-700 rounded-lg hover:bg-gray-300 transition" (click)="fermerModal()">Annuler</button>
+  </div>
   </div>
 </div>
+
