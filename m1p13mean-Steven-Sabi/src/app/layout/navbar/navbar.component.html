@@ -35,15 +35,15 @@
     <div class="hidden sm:flex items-center gap-6">
       <!-- Non connecté -->
       <ng-container *ngIf="!auth.isLoggedIn">
-        <a routerLink="/connexion" class="hover:text-blue-600 font-semibold">
+        <a routerLink="/connexion" class="font-semibold bg-blue-700 text-white rounded text-center p-2">
           Connexion
         </a>
-        <a
+        <!-- <a
           routerLink="/inscription"
           class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg transition"
         >
           Inscription
-        </a>
+        </a> -->
       </ng-container>
 
       <!-- Acheteur -->
@@ -121,13 +121,13 @@
   <!-- 🔹 Menu mobile -->
   <div *ngIf="mobileMenuOpen" class="sm:hidden px-6 pb-4 space-y-2">
     <ng-container *ngIf="!auth.isLoggedIn">
-      <a routerLink="/connexion" class="block py-2">Connexion</a>
-      <a
+      <a routerLink="/connexion" class="block py-2 bg-blue-500 text-white rounded text-center">Connexion</a>
+      <!-- <a
         routerLink="/inscription"
         class="block py-2 bg-blue-500 text-white rounded text-center"
       >
         Inscription
-      </a>
+      </a> -->
     </ng-container>
 
     <ng-container *ngIf="auth.hasRole('CLIENT')">
