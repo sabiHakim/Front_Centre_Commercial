@@ -1,5 +1,5 @@
 <div class="max-w-4xl mx-auto mt-6">
-  <h2 class="text-xl font-bold mb-4">Mes commandes</h2>
+  <h2 class="text-xl font-bold mb-4">Mes commandes refuser</h2>
 
   <div class="bg-white p-5 rounded-xl shadow">
     <table class="min-w-full text-sm">
@@ -7,7 +7,9 @@
         <tr>
           <th class="px-4 py-2 text-left">Produit</th>
           <th class="px-4 py-2 text-left">Prix</th>
-          <th class="px-4 py-2 text-center">Date</th>
+          <th class="px-4 py-2 text-left">Durée</th>
+          <th class="px-4 py-2 text-center">Date de création</th>
+          <th class="px-4 py-2 text-center">Date Fin</th>
           <th class="px-4 py-2 text-center">Statut</th>
         </tr>
       </thead>
@@ -18,10 +20,7 @@
             <ul class="space-y-1">
               <li *ngFor="let p of c.produits">
                 {{ p.nom }}
-                <span class="text-gray-500">
-                  (x{{ p.qte }}) 
-                </span>
-                <!-- - {{ p.prix | number }} Ar -->
+                <span class="text-gray-500"> (x{{ p.qte }}) </span>
               </li>
             </ul>
           </td>
@@ -30,12 +29,27 @@
           <td class="px-4 py-2 r">
             {{ getTotalCommande(c.produits) | number }} Ar
           </td>
-
+          <td class="px-4 py-2">
+            <ul class="space-y-1">
+              <li *ngFor="let p of c.produits">{{ p.duree }} jours</li>
+            </ul>
+          </td>
           <!-- Date de création -->
           <td class="px-4 py-2 text-center">
             {{ c.date_creation | date: "dd/MM/yyyy" }}
           </td>
-
+          <td class="px-4 py-2 text-center">
+            <ul class="space-y-1">
+              <li *ngFor="let p of c.produits">
+                <span class="text-gray-500">
+                  {{
+                    getExpirationParProduit(c.date_creation, p.duree)
+                      | date: "dd/MM/yyyy"
+                  }}
+                </span>
+              </li>
+            </ul>
+          </td>
           <!-- Statut -->
           <td class="px-4 py-2 text-center">
             <span
