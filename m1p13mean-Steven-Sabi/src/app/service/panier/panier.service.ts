@@ -31,17 +31,40 @@ export class PanierService {
   getPanier() {
     return this.panier;
   }
+  getPrixAvecSolde(produit: Produit): number {
+    const prixActuel = produit.prix[produit.prix.length - 1].montant;
+    const today = new Date();
+    const soldeActif = produit.solde?.find((s) => {
+      const debut = new Date(s.debut);
+      const fin = new Date(s.fin);
+      return today >= debut && today <= fin;
+    });
+    if (soldeActif) {
+      // return prixActuel - ((prixActuel * soldeActif.pourcentage) / 100);
+      return (prixActuel * soldeActif.pourcentage) / 100;
 
+    }
+    return prixActuel;
+  }
   addProduit(produit: Produit) {
     if (produit.qte <= 0) return;
-
     const exist = this.panier.find((p) => p._id === produit._id);
     if (exist) {
       if (exist.quantite < produit.qte) exist.quantite++;
     } else {
-      this.panier.push({ ...produit, quantite: 1 });
-    }
+      const prixFinal = this.getPrixAvecSolde(produit);
 
+      this.panier.push({
+        ...produit,
+        quantite: 1,
+        prix: [
+          {
+            date: new Date(),
+            montant: prixFinal,
+          },
+        ],
+      });
+    }
     this.savePanier();
   }
 
@@ -66,3 +89,8 @@ export class PanierService {
     );
   }
 }
+//  this.panier.push({
+//       ...produit,
+//       quantite: 1,
+//       prixUnitaire: this.getPrixFinal(produit) 
+//     });
