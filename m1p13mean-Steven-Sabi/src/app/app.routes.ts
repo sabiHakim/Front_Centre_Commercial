@@ -21,7 +21,7 @@ export const routes: Routes = [
   { path: 'client', component: ClientComponent },
   { path: 'panier', component: PanierComponent },
   { path: 'client/commandes', component: CommandeClientComponent },
-  { path: 'client/commandes-refuser', component: CommandeRefuserComponent },
+  { path: 'client/commandes-historique', component: CommandeRefuserComponent },
 
 
   // admin
