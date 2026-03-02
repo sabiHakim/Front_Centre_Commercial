@@ -40,8 +40,8 @@ export class PanierService {
       return today >= debut && today <= fin;
     });
     if (soldeActif) {
-      // return prixActuel - ((prixActuel * soldeActif.pourcentage) / 100);
-      return (prixActuel * soldeActif.pourcentage) / 100;
+      return prixActuel - ((prixActuel * soldeActif.pourcentage) / 100);
+      // return (prixActuel * soldeActif.pourcentage) / 100;
 
     }
     return prixActuel;
