@@ -1,22 +1,55 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { LucideAngularModule, Store, User, UserCog } from 'lucide-angular';
+import { FormsModule, NgForm } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Router, RouterLink } from '@angular/router';
+import { LucideAngularModule } from 'lucide-angular';
+import { environment } from '../../../environnements/environment';
+
 @Component({
   selector: 'app-inscription',
   standalone: true,
-  imports: [FormsModule, RouterLink, LucideAngularModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    LucideAngularModule
+  ],
   templateUrl: './inscription.component.html',
-  styleUrl: './inscription.component.css',
+  styleUrls: ['./inscription.component.css']
 })
 export class InscriptionComponent {
-  selectedRole: 'acheteur' | 'boutique' | 'admin' = 'acheteur';
-  protected readonly UserIcon = User;
-  protected readonly StoreIcon = Store;
-  protected readonly UserCogIcon = UserCog;
-  onSubmit() {
-    // Ici tu mettras plus tard la logique d'inscription (appel API, validation, etc.)
-    console.log('Inscription pour rôle :', this.selectedRole);
-    // Exemple : if (this.selectedRole === 'admin') { ... }
+  user = {
+    nom: '',
+    prenom: '',
+    email: '',
+    password: '',
+    contact: ''
+  };
+
+  isLoading = false;
+  private apiUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient, private router: Router) {}
+
+  onSubmit(form: NgForm) {
+    if (!form.valid || this.isLoading) return;
+
+    this.isLoading = true;
+
+    this.http.post(`${this.apiUrl}/users/create`, this.user)
+      .subscribe({
+        next: (res) => {
+          alert('Inscription réussie !');
+          form.resetForm();
+          this.isLoading = false;
+          this.router.navigate(['/connexion']);
+        },
+        error: (err) => {
+          console.error(err);
+          alert(err.error?.message || 'Erreur lors de l\'inscription');
+          this.isLoading = false;
+        }
+      });
   }
 }
